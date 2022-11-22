@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'components.dart';
 
 class Login extends StatelessWidget {
   Login({super.key});
 
-  final TextEditingController usernameController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  List<InputComponent> inputs = [
+    InputComponent(labelText: "username", labelHint: "username"),
+    InputComponent(labelText: "password", labelHint: "password"),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -23,26 +26,10 @@ class Login extends StatelessWidget {
                 "Login Screen",
                 style: TextStyle(color: Colors.white),
               ),
-              TextField(
-                controller: usernameController,
-                autofocus: true,
-                decoration: const InputDecoration(
-                  labelText: "User name",
-                  hintText: "username or email",
-                ),
-              ),
-              TextField(
-                controller: passwordController,
-                decoration: const InputDecoration(
-                  labelText: "Password",
-                  hintText: "password",
-                ),
-              ),
+              inputs[0],
+              inputs[1],
               ElevatedButton(
-                onPressed: () {
-                  print(usernameController.text);
-                  print(passwordController.text);
-                },
+                onPressed: () {},
                 child: const Text("Login"),
               ),
               ElevatedButton(
