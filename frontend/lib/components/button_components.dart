@@ -10,7 +10,7 @@ class ButtonComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FractionallySizedBox(
-      widthFactor: 0.7,
+      widthFactor: 0.4,
       child: ElevatedButton(
         onPressed: buttonFunction,
         style: ElevatedButton.styleFrom(
@@ -19,7 +19,7 @@ class ButtonComponent extends StatelessWidget {
         ),
         child: Text(
           buttonText,
-          style: const TextStyle(fontSize: 20),
+          style: const TextStyle(fontSize: 35),
         ),
       ),
     );
