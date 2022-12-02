@@ -24,7 +24,7 @@ class InputComponentVisible extends State<InputComponent> {
   Widget build(BuildContext context) {
     return TextField(
       cursorColor: Colors.white,
-      obscureText: !isVisible,
+      obscureText: isVisible && widget.isHidden,
       style: const TextStyle(
         color: Colors.white,
         fontSize: 30,
@@ -35,13 +35,18 @@ class InputComponentVisible extends State<InputComponent> {
         labelStyle: const TextStyle(color: Colors.amberAccent),
         suffixIcon: widget.isHidden
             ? IconButton(
-                icon: Icon(isVisible ? Icons.visibility_off : Icons.visibility),
+                icon: Icon(
+                  isVisible ? Icons.visibility : Icons.visibility_off,
+                  color: Colors.amberAccent,
+                ),
                 onPressed: () {
                   setState(() {
                     isVisible = !isVisible;
                   });
                 })
             : null,
+        focusedBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.red)),
       ),
     );
   }
