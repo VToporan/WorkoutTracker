@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'history.dart';
 import 'login.dart';
 import 'register.dart';
-import 'testRequests.dart';
 
 void main() {
   runApp(const MaterialApp(home: Home()));
@@ -48,13 +48,6 @@ class Home extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => Register()));
                 },
                 child: const Text("R'egister"),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => testRequest()));
-                },
-                child: const Text("R'equest"),
               ),
             ],
           ),

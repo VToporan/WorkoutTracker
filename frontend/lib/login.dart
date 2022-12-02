@@ -1,12 +1,31 @@
 import 'package:flutter/material.dart';
-import 'components.dart';
+import 'components/button_components.dart';
+import 'components/input_components.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   Login({super.key});
 
+  @override
+  State<Login> createState() => LoginState();
+}
+
+class LoginState extends State<Login> {
+  static TextEditingController loginController = TextEditingController();
+  static TextEditingController passwordController = TextEditingController();
+
   List<InputComponent> inputs = [
-    InputComponent(labelText: "username", labelHint: "username"),
-    InputComponent(labelText: "password", labelHint: "password"),
+    InputComponent(
+      inputController: loginController,
+      labelText: "Username",
+      errorText: "Username",
+      isHidden: false,
+    ),
+    InputComponent(
+      inputController: passwordController,
+      labelText: "Password",
+      errorText: "Password",
+      isHidden: true,
+    ),
   ];
 
   @override
@@ -22,21 +41,28 @@ class Login extends StatelessWidget {
         body: Center(
           child: Column(
             children: [
-              const Text(
-                "Login Screen",
-                style: TextStyle(color: Colors.white),
+              Padding(
+                padding: const EdgeInsets.only(top: 20, left: 50, right: 50),
+                child: Column(
+                  children: inputs,
+                ),
               ),
-              inputs[0],
-              inputs[1],
-              ElevatedButton(
-                onPressed: () {},
-                child: const Text("Login"),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text("Home"),
+              Padding(
+                padding: const EdgeInsets.only(top: 50, left: 50, right: 50),
+                child: Column(children: [
+                  ButtonComponent(
+                      buttonFunction: () {
+                        print('yay');
+                        print(loginController.text);
+                        print(passwordController.text);
+                      },
+                      buttonText: 'test'),
+                  ButtonComponent(
+                      buttonFunction: () {
+                        Navigator.pop(context);
+                      },
+                      buttonText: "home"),
+                ]),
               ),
             ],
           ),
