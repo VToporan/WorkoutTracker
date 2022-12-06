@@ -1,13 +1,67 @@
 import 'package:flutter/material.dart';
 
-class Register extends StatelessWidget {
-  Register({super.key});
+import 'components/button_components.dart';
+import 'components/input_components.dart';
 
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController usernameController = TextEditingController();
-  final TextEditingController firstPasswordController = TextEditingController();
-  final TextEditingController secondPasswordController =
-      TextEditingController();
+class Register extends StatefulWidget {
+  const Register({super.key});
+
+  @override
+  State<Register> createState() => RegisterState();
+}
+
+class RegisterState extends State<Register> {
+  static TextEditingController userController = TextEditingController();
+  static TextEditingController emailController = TextEditingController();
+  static TextEditingController passwordController = TextEditingController();
+  static TextEditingController confirmController = TextEditingController();
+
+  static String userError = "";
+  static String emailError = "";
+  static String passError = "";
+  static String confirmError = "";
+
+  List<InputComponent> inputs = [
+    InputComponent(
+      labelText: "Username",
+      errorText: userError,
+      inputController: userController,
+      isHidden: false,
+    ),
+    InputComponent(
+      labelText: "Email",
+      errorText: emailError,
+      inputController: emailController,
+      isHidden: false,
+    ),
+    InputComponent(
+      labelText: "Password",
+      errorText: passError,
+      inputController: passwordController,
+      isHidden: true,
+    ),
+    InputComponent(
+      labelText: "Confirm password",
+      errorText: confirmError,
+      inputController: confirmController,
+      isHidden: true,
+    ),
+  ];
+
+  attemptRegister() {
+    String username = userController.text;
+    String email = emailController.text;
+    String password = passwordController.text;
+    String confirm = confirmController.text;
+
+    Map<String, dynamic> payload() => {
+          'username': username,
+          'email': email,
+          'password': password,
+        };
+
+    print(payload());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,55 +76,24 @@ class Register extends StatelessWidget {
         body: Center(
           child: Column(
             children: [
-              const Text(
-                "Register Screen",
-                style: TextStyle(color: Colors.white),
-              ),
-              TextField(
-                controller: usernameController,
-                autofocus: true,
-                decoration: const InputDecoration(
-                  labelText: "Email",
-                  hintText: "email",
+              Padding(
+                padding: const EdgeInsets.only(top: 290, left: 250, right: 250),
+                child: Column(
+                  children: inputs,
                 ),
               ),
-              TextField(
-                controller: emailController,
-                autofocus: true,
-                decoration: const InputDecoration(
-                  labelText: "User name",
-                  hintText: "username",
-                ),
-              ),
-              TextField(
-                controller: firstPasswordController,
-                decoration: const InputDecoration(
-                  labelText: "Password",
-                  hintText: "password",
-                ),
-              ),
-              TextField(
-                controller: secondPasswordController,
-                decoration: const InputDecoration(
-                  labelText: "Confirm Password",
-                  hintText: "confirm password",
-                ),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  print(usernameController.text);
-                  print(emailController.text);
-                  print(firstPasswordController.text);
-                  print(secondPasswordController.text);
-                },
-                child: const Text("Sign up"),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text("Home"),
-              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 150, left: 50, right: 50),
+                child: Column(children: [
+                  SizedBox(
+                    height: 70,
+                    child: ButtonComponent(
+                      buttonText: 'Register',
+                      buttonFunction: attemptRegister,
+                    ),
+                  )
+                ]),
+              )
             ],
           ),
         ));

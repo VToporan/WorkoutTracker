@@ -1,13 +1,48 @@
-import 'package:flutter/material.dart';
-import 'components.dart';
+import 'dart:convert';
 
-class Login extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'components/button_components.dart';
+import 'components/input_components.dart';
+
+class Login extends StatefulWidget {
   Login({super.key});
 
+  @override
+  State<Login> createState() => LoginState();
+}
+
+class LoginState extends State<Login> {
+  static TextEditingController userController = TextEditingController();
+  static TextEditingController passwordController = TextEditingController();
+  static String errorUser = "";
+  static String errorPass = "";
+
   List<InputComponent> inputs = [
-    InputComponent(labelText: "username", labelHint: "username"),
-    InputComponent(labelText: "password", labelHint: "password"),
+    InputComponent(
+      inputController: userController,
+      labelText: "Username",
+      errorText: errorUser,
+      isHidden: false,
+    ),
+    InputComponent(
+      inputController: passwordController,
+      labelText: "Password",
+      errorText: errorPass,
+      isHidden: true,
+    ),
   ];
+
+  attemptLogin() {
+    String username = userController.text;
+    String password = passwordController.text;
+
+    Map<String, dynamic> payload() => {
+          'username': username,
+          'password': password,
+        };
+
+    print(payload());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,22 +57,24 @@ class Login extends StatelessWidget {
         body: Center(
           child: Column(
             children: [
-              const Text(
-                "Login Screen",
-                style: TextStyle(color: Colors.white),
+              Padding(
+                padding: const EdgeInsets.only(top: 290, left: 250, right: 250),
+                child: Column(
+                  children: inputs,
+                ),
               ),
-              inputs[0],
-              inputs[1],
-              ElevatedButton(
-                onPressed: () {},
-                child: const Text("Login"),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text("Home"),
-              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 150, left: 50, right: 50),
+                child: Column(children: [
+                  SizedBox(
+                    height: 70,
+                    child: ButtonComponent(
+                      buttonText: 'Login',
+                      buttonFunction: attemptLogin,
+                    ),
+                  )
+                ]),
+              )
             ],
           ),
         ));
