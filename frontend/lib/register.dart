@@ -21,6 +21,9 @@ class RegisterState extends State<Register> {
   static String passError = "";
   static String confirmError = "";
 
+  bool isError = false;
+  String errorMessage = "";
+
   List<InputComponent> inputs = [
     InputComponent(
       labelText: "Username",
@@ -60,7 +63,65 @@ class RegisterState extends State<Register> {
           'password': password,
         };
 
-    print(payload());
+    if (username.isEmpty) {
+      isError = true;
+      userError = "Username can't be empty";
+    }
+
+    if (email.isEmpty) {
+      isError = true;
+      emailError = "Email can't be empty";
+    }
+
+    if (password.isEmpty) {
+      isError = true;
+      passError = "Password can't be empty";
+    }
+
+    if (confirm.isEmpty) {
+      isError = true;
+      confirmError = "Confirm password can't be empty";
+    }
+
+    if (isError) {
+      isError = false;
+      errorMessage = "Something went wrong";
+    } else {
+      errorMessage = "";
+    }
+
+    setState(() {
+      inputs = [
+        InputComponent(
+          labelText: "Username",
+          errorText: userError,
+          inputController: userController,
+          isHidden: false,
+        ),
+        InputComponent(
+          labelText: "Email",
+          errorText: emailError,
+          inputController: emailController,
+          isHidden: false,
+        ),
+        InputComponent(
+          labelText: "Password",
+          errorText: passError,
+          inputController: passwordController,
+          isHidden: true,
+        ),
+        InputComponent(
+          labelText: "Confirm password",
+          errorText: confirmError,
+          inputController: confirmController,
+          isHidden: true,
+        ),
+      ];
+    });
+    userError = "";
+    emailError = "";
+    passError = "";
+    confirm = "";
   }
 
   @override
@@ -84,7 +145,21 @@ class RegisterState extends State<Register> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 150),
+                padding: const EdgeInsets.only(
+                  top: 50,
+                ),
+                child: errorMessage != ""
+                    ? Text(
+                        errorMessage,
+                        style: const TextStyle(
+                          color: Colors.red,
+                          fontSize: 20,
+                        ),
+                      )
+                    : null,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 50),
                 child: Column(children: [
                   SizedBox(
                     height: 70,

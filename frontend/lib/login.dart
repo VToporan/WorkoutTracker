@@ -58,9 +58,8 @@ class LoginState extends State<Login> {
       errorMessage = "Something went wrong";
     } else {
       errorMessage = "";
-      errorUser = "";
-      errorPass = "";
     }
+
     setState(() {
       inputs = [
         InputComponent(
@@ -77,6 +76,8 @@ class LoginState extends State<Login> {
         ),
       ];
     });
+    errorUser = "";
+    errorPass = "";
   }
 
   @override
