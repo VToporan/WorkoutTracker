@@ -33,6 +33,9 @@ class InputComponentVisible extends State<InputComponent> {
       decoration: InputDecoration(
         labelText: widget.labelText,
         labelStyle: const TextStyle(color: Colors.amberAccent),
+        errorText: widget.errorText != "" ? widget.errorText : null,
+        errorStyle:
+            widget.errorText != "" ? const TextStyle(fontSize: 15) : null,
         suffixIcon: widget.isHidden
             ? IconButton(
                 icon: Icon(

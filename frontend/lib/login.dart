@@ -5,7 +5,7 @@ import 'components/button_components.dart';
 import 'components/input_components.dart';
 
 class Login extends StatefulWidget {
-  Login({super.key});
+  const Login({super.key});
 
   @override
   State<Login> createState() => LoginState();
@@ -16,6 +16,8 @@ class LoginState extends State<Login> {
   static TextEditingController passwordController = TextEditingController();
   static String errorUser = "";
   static String errorPass = "";
+  bool isError = false;
+  String errorMessage = "";
 
   List<InputComponent> inputs = [
     InputComponent(
@@ -41,7 +43,40 @@ class LoginState extends State<Login> {
           'password': password,
         };
 
-    print(payload());
+    if (username.isEmpty) {
+      isError = true;
+      errorUser = "Username can't be empty";
+    }
+
+    if (password.isEmpty) {
+      isError = true;
+      errorPass = "Password can't be empty";
+    }
+
+    if (isError) {
+      isError = false;
+      errorMessage = "Something went wrong";
+    } else {
+      errorMessage = "";
+      errorUser = "";
+      errorPass = "";
+    }
+    setState(() {
+      inputs = [
+        InputComponent(
+          inputController: userController,
+          labelText: "Username",
+          errorText: errorUser,
+          isHidden: false,
+        ),
+        InputComponent(
+          inputController: passwordController,
+          labelText: "Password",
+          errorText: errorPass,
+          isHidden: true,
+        ),
+      ];
+    });
   }
 
   @override
@@ -56,15 +91,30 @@ class LoginState extends State<Login> {
         ),
         body: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 290, left: 250, right: 250),
+                padding: const EdgeInsets.only(left: 250, right: 250),
                 child: Column(
                   children: inputs,
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 150, left: 50, right: 50),
+                padding: const EdgeInsets.only(
+                  top: 50,
+                ),
+                child: errorMessage != ""
+                    ? Text(
+                        errorMessage,
+                        style: const TextStyle(
+                          color: Colors.red,
+                          fontSize: 20,
+                        ),
+                      )
+                    : null,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 50),
                 child: Column(children: [
                   SizedBox(
                     height: 70,

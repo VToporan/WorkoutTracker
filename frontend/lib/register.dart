@@ -75,15 +75,16 @@ class RegisterState extends State<Register> {
         ),
         body: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 290, left: 250, right: 250),
+                padding: const EdgeInsets.only(left: 250, right: 250),
                 child: Column(
                   children: inputs,
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 150, left: 50, right: 50),
+                padding: const EdgeInsets.only(top: 150),
                 child: Column(children: [
                   SizedBox(
                     height: 70,
