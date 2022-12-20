@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'components/card_component.dart';
 import 'history.dart';
 import 'login.dart';
 import 'register.dart';
@@ -49,6 +50,8 @@ class Home extends StatelessWidget {
                 },
                 child: const Text("R'egister"),
               ),
+              const CardComponent(),
+              const CardComponent(),
             ],
           ),
         ));
