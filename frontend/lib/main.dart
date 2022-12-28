@@ -25,9 +25,15 @@ class Home extends StatelessWidget {
         body: Center(
           child: Column(
             children: [
-              const Text(
-                "Home Screen",
-                style: TextStyle(color: Colors.white),
+              const CardComponent(
+                title: "Card 1",
+                subTitle: "Sub 1",
+                index: 1,
+              ),
+              const CardComponent(
+                title: "Card 2",
+                subTitle: "Sub 2",
+                index: 2,
               ),
               ElevatedButton(
                 onPressed: () {
@@ -50,8 +56,6 @@ class Home extends StatelessWidget {
                 },
                 child: const Text("R'egister"),
               ),
-              const CardComponent(),
-              const CardComponent(),
             ],
           ),
         ));
