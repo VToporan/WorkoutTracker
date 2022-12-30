@@ -25,37 +25,43 @@ class ExercisesState extends State<Exercises> {
           foregroundColor: Colors.red[900],
         ),
         body: Center(
-            child: ListView.builder(
-                itemCount: data == null ? 0 : data.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Slidable(
-                    key: ValueKey(data[index]["id"]),
-                    startActionPane: ActionPane(
-                      dismissible: DismissiblePane(onDismissed: () {}),
-                      motion: const ScrollMotion(),
-                      children: const [
-                        // A SlidableAction can have an icon and/or a label.
-                        SlidableAction(
-                          onPressed: null,
-                          backgroundColor: Colors.red,
-                          foregroundColor: Colors.white,
-                          icon: Icons.delete,
-                          label: 'Delete',
+            child: SlidableAutoCloseBehavior(
+                child: ListView.builder(
+                    itemCount: data == null ? 0 : data.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      var currentCard = data[index];
+                      return Slidable(
+                        key: ValueKey(currentCard["id"]),
+                        groupTag: "0",
+                        startActionPane: ActionPane(
+                          motion: const BehindMotion(),
+                          children: [
+                            SlidableAction(
+                              flex: 1,
+                              onPressed: (context) {
+                                setState(() {
+                                  data.remove(currentCard);
+                                });
+                              },
+                              backgroundColor: Colors.red,
+                              foregroundColor: Colors.white,
+                              icon: Icons.delete,
+                              label: 'Delete',
+                            ),
+                            SlidableAction(
+                              onPressed: null,
+                              backgroundColor: Colors.grey,
+                              foregroundColor: Colors.white,
+                              icon: Icons.settings,
+                              label: 'Settings',
+                            ),
+                          ],
                         ),
-                        SlidableAction(
-                          onPressed: null,
-                          backgroundColor: Colors.grey,
-                          foregroundColor: Colors.white,
-                          icon: Icons.settings,
-                          label: 'Settings',
-                        ),
-                      ],
-                    ),
-                    child: CardComponent(
-                        title: data[index]["title"],
-                        subTitle: data[index]["subtitle"]),
-                  );
-                })));
+                        child: CardComponent(
+                            title: currentCard["title"],
+                            subTitle: currentCard["subtitle"]),
+                      );
+                    }))));
   }
 
   static List extractFromPayload() {
