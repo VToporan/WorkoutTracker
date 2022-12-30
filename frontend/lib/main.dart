@@ -7,7 +7,13 @@ import 'pages/login.dart';
 import 'pages/register.dart';
 
 void main() {
-  runApp(const MaterialApp(home: Home()));
+  runApp(MaterialApp(
+      title: "Workout Tracker",
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Colors.black38,
+      ),
+      home: const Home()));
 }
 
 class Home extends StatelessWidget {
