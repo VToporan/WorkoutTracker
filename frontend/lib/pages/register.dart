@@ -1,56 +1,86 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'components/button_components.dart';
-import 'components/input_components.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+import '../components/button_components.dart';
+import '../components/input_components.dart';
+
+class Register extends StatefulWidget {
+  const Register({super.key});
 
   @override
-  State<Login> createState() => LoginState();
+  State<Register> createState() => RegisterState();
 }
 
-class LoginState extends State<Login> {
+class RegisterState extends State<Register> {
   static TextEditingController userController = TextEditingController();
+  static TextEditingController emailController = TextEditingController();
   static TextEditingController passwordController = TextEditingController();
-  static String errorUser = "";
-  static String errorPass = "";
+  static TextEditingController confirmController = TextEditingController();
+
+  static String userError = "";
+  static String emailError = "";
+  static String passError = "";
+  static String confirmError = "";
+
   bool isError = false;
   String errorMessage = "";
 
   List<InputComponent> inputs = [
     InputComponent(
-      inputController: userController,
       labelText: "Username",
-      errorText: errorUser,
+      errorText: userError,
+      inputController: userController,
       isHidden: false,
     ),
     InputComponent(
-      inputController: passwordController,
+      labelText: "Email",
+      errorText: emailError,
+      inputController: emailController,
+      isHidden: false,
+    ),
+    InputComponent(
       labelText: "Password",
-      errorText: errorPass,
+      errorText: passError,
+      inputController: passwordController,
+      isHidden: true,
+    ),
+    InputComponent(
+      labelText: "Confirm password",
+      errorText: confirmError,
+      inputController: confirmController,
       isHidden: true,
     ),
   ];
 
-  attemptLogin() {
+  attemptRegister() {
     String username = userController.text;
+    String email = emailController.text;
     String password = passwordController.text;
+    String confirm = confirmController.text;
 
     Map<String, dynamic> payload() => {
           'username': username,
+          'email': email,
           'password': password,
         };
 
     if (username.isEmpty) {
       isError = true;
-      errorUser = "Username can't be empty";
+      userError = "Username can't be empty";
+    }
+
+    if (email.isEmpty) {
+      isError = true;
+      emailError = "Email can't be empty";
     }
 
     if (password.isEmpty) {
       isError = true;
-      errorPass = "Password can't be empty";
+      passError = "Password can't be empty";
+    }
+
+    if (confirm.isEmpty) {
+      isError = true;
+      confirmError = "Confirm password can't be empty";
     }
 
     if (isError) {
@@ -63,21 +93,35 @@ class LoginState extends State<Login> {
     setState(() {
       inputs = [
         InputComponent(
-          inputController: userController,
           labelText: "Username",
-          errorText: errorUser,
+          errorText: userError,
+          inputController: userController,
           isHidden: false,
         ),
         InputComponent(
-          inputController: passwordController,
+          labelText: "Email",
+          errorText: emailError,
+          inputController: emailController,
+          isHidden: false,
+        ),
+        InputComponent(
           labelText: "Password",
-          errorText: errorPass,
+          errorText: passError,
+          inputController: passwordController,
+          isHidden: true,
+        ),
+        InputComponent(
+          labelText: "Confirm password",
+          errorText: confirmError,
+          inputController: confirmController,
           isHidden: true,
         ),
       ];
     });
-    errorUser = "";
-    errorPass = "";
+    userError = "";
+    emailError = "";
+    passError = "";
+    confirm = "";
   }
 
   @override
@@ -120,8 +164,8 @@ class LoginState extends State<Login> {
                   SizedBox(
                     height: 70,
                     child: ButtonComponent(
-                      buttonText: 'Login',
-                      buttonFunction: attemptLogin,
+                      buttonText: 'Register',
+                      buttonFunction: attemptRegister,
                     ),
                   )
                 ]),

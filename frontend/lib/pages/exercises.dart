@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter/material.dart';
 
-import 'components/card_component.dart';
+import '../components/card_component.dart';
 
 class Exercises extends StatefulWidget {
   const Exercises({super.key});

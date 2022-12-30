@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'components/card_component.dart';
-import 'exercises.dart';
-import 'history.dart';
-import 'login.dart';
-import 'register.dart';
+import 'pages/exercises.dart';
+import 'pages/history.dart';
+import 'pages/login.dart';
+import 'pages/register.dart';
 
 void main() {
   runApp(const MaterialApp(home: Home()));
