@@ -127,51 +127,43 @@ class RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.black26,
-        appBar: AppBar(
-          title: const Text("GainsTrack"),
-          centerTitle: true,
-          backgroundColor: Colors.orange[400],
-          foregroundColor: Colors.red[900],
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 250, right: 250),
-                child: Column(
-                  children: inputs,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 50,
-                ),
-                child: errorMessage != ""
-                    ? Text(
-                        errorMessage,
-                        style: const TextStyle(
-                          color: Colors.red,
-                          fontSize: 20,
-                        ),
-                      )
-                    : null,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 50),
-                child: Column(children: [
-                  SizedBox(
-                    height: 70,
-                    child: ButtonComponent(
-                      buttonText: 'Register',
-                      buttonFunction: attemptRegister,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 250, right: 250),
+            child: Column(
+              children: inputs,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 50,
+            ),
+            child: errorMessage != ""
+                ? Text(
+                    errorMessage,
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontSize: 20,
                     ),
                   )
-                ]),
-              )
-            ],
+                : null,
           ),
-        ));
+          Padding(
+            padding: const EdgeInsets.only(top: 50),
+            child: Column(children: [
+              SizedBox(
+                height: 70,
+                child: ButtonComponent(
+                  buttonText: 'Register',
+                  buttonFunction: attemptRegister,
+                ),
+              )
+            ]),
+          )
+        ],
+      ),
+    );
   }
 }

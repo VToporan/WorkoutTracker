@@ -17,51 +17,43 @@ class ExercisesState extends State<Exercises> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.black26,
-        appBar: AppBar(
-          title: const Text("GainsTrack"),
-          centerTitle: true,
-          backgroundColor: Colors.orange[400],
-          foregroundColor: Colors.red[900],
-        ),
-        body: Center(
-            child: SlidableAutoCloseBehavior(
-                child: ListView.builder(
-                    itemCount: data == null ? 0 : data.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      var currentCard = data[index];
-                      return Slidable(
-                        key: ValueKey(currentCard["id"]),
-                        groupTag: "0",
-                        startActionPane: ActionPane(
-                          motion: const BehindMotion(),
-                          children: [
-                            SlidableAction(
-                              flex: 1,
-                              onPressed: (context) {
-                                setState(() {
-                                  data.remove(currentCard);
-                                });
-                              },
-                              backgroundColor: Colors.red,
-                              foregroundColor: Colors.white,
-                              icon: Icons.delete,
-                              label: 'Delete',
-                            ),
-                            SlidableAction(
-                              onPressed: null,
-                              backgroundColor: Colors.grey,
-                              foregroundColor: Colors.white,
-                              icon: Icons.settings,
-                              label: 'Settings',
-                            ),
-                          ],
+        body: SlidableAutoCloseBehavior(
+            child: ListView.builder(
+                itemCount: data == null ? 0 : data.length,
+                itemBuilder: (BuildContext context, int index) {
+                  var currentCard = data[index];
+                  return Slidable(
+                    key: ValueKey(currentCard["id"]),
+                    groupTag: "0",
+                    startActionPane: ActionPane(
+                      motion: const BehindMotion(),
+                      children: [
+                        SlidableAction(
+                          flex: 1,
+                          onPressed: (context) {
+                            setState(() {
+                              data.remove(currentCard);
+                            });
+                          },
+                          backgroundColor: Colors.red,
+                          foregroundColor: Colors.white,
+                          icon: Icons.delete,
+                          label: 'Delete',
                         ),
-                        child: CardComponent(
-                            title: currentCard["title"],
-                            subTitle: currentCard["subtitle"]),
-                      );
-                    }))));
+                        SlidableAction(
+                          onPressed: null,
+                          backgroundColor: Colors.grey,
+                          foregroundColor: Colors.white,
+                          icon: Icons.settings,
+                          label: 'Settings',
+                        ),
+                      ],
+                    ),
+                    child: CardComponent(
+                        title: currentCard["title"],
+                        subTitle: currentCard["subtitle"]),
+                  );
+                })));
   }
 
   static List extractFromPayload() {
