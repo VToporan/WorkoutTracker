@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'components/card_component.dart';
+import 'exercises.dart';
 import 'history.dart';
 import 'login.dart';
 import 'register.dart';
@@ -25,16 +26,6 @@ class Home extends StatelessWidget {
         body: Center(
           child: Column(
             children: [
-              const CardComponent(
-                title: "Card 1",
-                subTitle: "Sub 1",
-                index: 1,
-              ),
-              const CardComponent(
-                title: "Card 2",
-                subTitle: "Sub 2",
-                index: 2,
-              ),
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(context,
@@ -55,6 +46,15 @@ class Home extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => Register()));
                 },
                 child: const Text("R'egister"),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const Exercises()));
+                },
+                child: const Text("L'exercisies"),
               ),
             ],
           ),
