@@ -10,9 +10,16 @@ void main() {
   runApp(MaterialApp(
       title: "Workout Tracker",
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Colors.black38,
-      ),
+          primaryColor: Colors.amberAccent,
+          scaffoldBackgroundColor: Colors.black38,
+          bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+            backgroundColor: Colors.amberAccent,
+            selectedItemColor: Colors.red,
+          ),
+          appBarTheme: const AppBarTheme(
+            foregroundColor: Colors.red,
+            backgroundColor: Colors.amberAccent,
+          )),
       home: const Home()));
 }
 
@@ -45,8 +52,6 @@ class HomeState extends State<Home> {
       appBar: AppBar(
         title: const Text("GainsTrack"),
         centerTitle: true,
-        backgroundColor: Colors.orange[400],
-        foregroundColor: Colors.red[900],
       ),
       body: Center(child: navInfo.elementAt(currentNavIndex).page),
       bottomNavigationBar: BottomNavigationBar(
