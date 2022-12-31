@@ -131,7 +131,7 @@ class RegisterState extends State<Register> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 250, right: 250),
+            padding: const EdgeInsets.symmetric(horizontal: 50),
             child: Column(
               children: inputs,
             ),
