@@ -23,24 +23,15 @@ class InputComponentVisible extends State<InputComponent> {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      cursorColor: Colors.white,
       obscureText: isVisible && widget.isHidden,
-      style: const TextStyle(
-        color: Colors.white,
-        fontSize: 30,
-      ),
       controller: widget.inputController,
       decoration: InputDecoration(
         labelText: widget.labelText,
-        labelStyle: const TextStyle(color: Colors.amberAccent),
         errorText: widget.errorText != "" ? widget.errorText : null,
-        errorStyle:
-            widget.errorText != "" ? const TextStyle(fontSize: 15) : null,
         suffixIcon: widget.isHidden
             ? IconButton(
                 icon: Icon(
                   isVisible ? Icons.visibility : Icons.visibility_off,
-                  color: Colors.amberAccent,
                 ),
                 onPressed: () {
                   setState(() {
@@ -48,8 +39,6 @@ class InputComponentVisible extends State<InputComponent> {
                   });
                 })
             : null,
-        focusedBorder: const UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.red)),
       ),
     );
   }
