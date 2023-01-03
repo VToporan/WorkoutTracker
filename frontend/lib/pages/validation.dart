@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../components/button_components.dart';
+import '../components/error_component.dart';
 import '../components/input_components.dart';
 
 class Validate extends StatefulWidget {
@@ -54,7 +55,7 @@ class ValidateState extends State<Validate> {
       setRegisterInputs();
     });
 
-    resetErrorMessage();
+    resetErrorMessages();
   }
 
   void attemptLogin() {
@@ -67,10 +68,10 @@ class ValidateState extends State<Validate> {
         };
 
     setState(() {
-      setRegisterInputs();
+      setLoginInputs();
     });
 
-    resetErrorMessage();
+    resetErrorMessages();
   }
 
   @override
@@ -80,27 +81,14 @@ class ValidateState extends State<Validate> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 50),
+            padding: const EdgeInsets.symmetric(horizontal: 25),
             child: Column(
               children: inputs,
             ),
           ),
+          ErrorComponent(message: errorMessage),
           Padding(
-            padding: const EdgeInsets.only(
-              top: 50,
-            ),
-            child: errorMessage != ""
-                ? Text(
-                    errorMessage,
-                    style: const TextStyle(
-                      color: Colors.red,
-                      fontSize: 20,
-                    ),
-                  )
-                : null,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 50),
+            padding: const EdgeInsets.only(top: 20),
             child: submitButton(),
           )
         ],
@@ -154,7 +142,7 @@ class ValidateState extends State<Validate> {
     ];
   }
 
-  void resetErrorMessage() {
+  void resetErrorMessages() {
     userError = "";
     emailError = "";
     passError = "";
