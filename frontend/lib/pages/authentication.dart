@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../components/button_components.dart';
-import '../pages/login.dart';
-import '../pages/register.dart';
+import '../pages/validation.dart';
 
 class Authentication extends StatefulWidget {
   const Authentication({super.key});
@@ -22,15 +21,21 @@ class AuthenticationState extends State<Authentication> {
           ButtonComponent(
             buttonText: 'Login',
             buttonFunction: () {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: ((context) => const Login())));
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: ((context) =>
+                          const Validate(isLoginPage: true))));
             },
           ),
           ButtonComponent(
             buttonText: 'Register',
             buttonFunction: () {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: ((context) => const Register())));
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: ((context) =>
+                          const Validate(isLoginPage: false))));
             },
           ),
         ],
