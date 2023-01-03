@@ -45,6 +45,12 @@ void main() {
           focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: ThemeColors.foregroundAccent)),
         ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: ThemeColors.buttonDefault,
+            foregroundColor: ThemeColors.buttonAccent,
+          ),
+        ),
         textTheme: const TextTheme(
           titleMedium:
               TextStyle(fontSize: 30, color: ThemeColors.foregroundAccent),
@@ -76,7 +82,7 @@ class Home extends StatefulWidget {
 
 class HomeState extends State<Home> {
   static List<NavigationInfo> navInfo = [
-    NavigationInfo(const Exercises(), "Home", Icons.home),
+    NavigationInfo(const Login(), "Home", Icons.home),
     NavigationInfo(const History(), "History", Icons.history_sharp)
   ];
   int currentNavIndex = 0;
