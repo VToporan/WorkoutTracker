@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 
 import 'components/card_component.dart';
 import 'pages/exercises.dart';
@@ -6,20 +9,60 @@ import 'pages/history.dart';
 import 'pages/login.dart';
 import 'pages/register.dart';
 
+class ThemeColors {
+  ThemeColors._();
+
+  static const Color buttonDefault = Color(0xFF403A40);
+  static const Color buttonAccent = Color(0xFF908090);
+  static const Color foregroundDefault = Color(0xFF504050);
+  static const Color foregroundAccent = Color(0xFFAA99AA);
+  static const Color backgroundDefault = Color(0xFF100010);
+}
+
 void main() {
   runApp(MaterialApp(
       title: "Workout Tracker",
       theme: ThemeData(
-          primaryColor: Colors.amberAccent,
-          scaffoldBackgroundColor: Colors.black38,
-          bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-            backgroundColor: Colors.amberAccent,
-            selectedItemColor: Colors.red,
+        primaryColor: ThemeColors.foregroundDefault,
+        scaffoldBackgroundColor: ThemeColors.backgroundDefault,
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          backgroundColor: ThemeColors.buttonDefault,
+          selectedItemColor: ThemeColors.buttonAccent,
+        ),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: ThemeColors.buttonDefault,
+          titleTextStyle:
+              TextStyle(fontSize: 30, color: ThemeColors.buttonAccent),
+        ),
+        inputDecorationTheme: const InputDecorationTheme(
+          labelStyle:
+              TextStyle(fontSize: 35, color: ThemeColors.foregroundDefault),
+          hintStyle:
+              TextStyle(fontSize: 20, color: ThemeColors.foregroundDefault),
+          errorStyle:
+              TextStyle(fontSize: 15, color: ThemeColors.foregroundAccent),
+          iconColor: ThemeColors.foregroundDefault,
+          focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: ThemeColors.foregroundAccent)),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: ThemeColors.buttonDefault,
+            foregroundColor: ThemeColors.buttonAccent,
           ),
-          appBarTheme: const AppBarTheme(
-            foregroundColor: Colors.red,
-            backgroundColor: Colors.amberAccent,
-          )),
+        ),
+        textTheme: const TextTheme(
+          titleMedium:
+              TextStyle(fontSize: 30, color: ThemeColors.foregroundAccent),
+          titleSmall:
+              TextStyle(fontSize: 20, color: ThemeColors.foregroundAccent),
+          displayMedium:
+              TextStyle(fontSize: 30, color: ThemeColors.foregroundAccent),
+        ),
+        textSelectionTheme: const TextSelectionThemeData(
+            cursorColor: ThemeColors.foregroundAccent),
+        cardColor: ThemeColors.foregroundDefault,
+      ),
       home: const Home()));
 }
 
@@ -48,7 +91,6 @@ class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black26,
       appBar: AppBar(
         title: const Text("GainsTrack"),
         centerTitle: true,

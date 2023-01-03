@@ -13,14 +13,13 @@ class ButtonComponent extends StatelessWidget {
       widthFactor: 0.4,
       child: ElevatedButton(
         onPressed: buttonFunction,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.amberAccent,
-          foregroundColor: Colors.red,
-        ),
-        child: Text(
-          buttonText,
-          style: const TextStyle(fontSize: 35),
-        ),
+        child: FittedBox(
+            fit: BoxFit.fitWidth,
+            child: Text(
+              buttonText,
+              style: Theme.of(context).textTheme.titleMedium,
+              textScaleFactor: 0.9,
+            )),
       ),
     );
   }

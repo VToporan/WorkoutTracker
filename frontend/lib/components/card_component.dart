@@ -17,8 +17,14 @@ class CardComponent extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ListTile(
-              title: Text(title),
-              subtitle: Text(subTitle),
+              title: Text(
+                title,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              subtitle: Text(
+                subTitle,
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
             ),
           ],
         ),
