@@ -56,10 +56,11 @@ void main() {
               TextStyle(fontSize: 30, color: ThemeColors.foregroundAccent),
           titleSmall:
               TextStyle(fontSize: 20, color: ThemeColors.foregroundAccent),
-          displayMedium: TextStyle(fontSize: 25, color: Colors.white),
+          displayMedium:
+              TextStyle(fontSize: 30, color: ThemeColors.foregroundAccent),
         ),
-        textSelectionTheme:
-            const TextSelectionThemeData(cursorColor: Colors.white),
+        textSelectionTheme: const TextSelectionThemeData(
+            cursorColor: ThemeColors.foregroundAccent),
         cardColor: ThemeColors.foregroundDefault,
       ),
       home: const Home()));
@@ -82,7 +83,7 @@ class Home extends StatefulWidget {
 
 class HomeState extends State<Home> {
   static List<NavigationInfo> navInfo = [
-    NavigationInfo(const Login(), "Home", Icons.home),
+    NavigationInfo(const Exercises(), "Home", Icons.home),
     NavigationInfo(const History(), "History", Icons.history_sharp)
   ];
   int currentNavIndex = 0;
