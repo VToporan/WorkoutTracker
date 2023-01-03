@@ -1,13 +1,8 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 
-import 'components/card_component.dart';
 import 'pages/exercises.dart';
 import 'pages/history.dart';
-import 'pages/login.dart';
-import 'pages/register.dart';
+import 'pages/authentication.dart';
 
 class ThemeColors {
   ThemeColors._();
@@ -83,7 +78,7 @@ class Home extends StatefulWidget {
 
 class HomeState extends State<Home> {
   static List<NavigationInfo> navInfo = [
-    NavigationInfo(const Exercises(), "Home", Icons.home),
+    NavigationInfo(const Authentication(), "Home", Icons.home),
     NavigationInfo(const History(), "History", Icons.history_sharp)
   ];
   int currentNavIndex = 0;
