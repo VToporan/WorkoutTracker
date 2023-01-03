@@ -25,6 +25,7 @@ class InputComponentVisible extends State<InputComponent> {
     return TextField(
       obscureText: isVisible && widget.isHidden,
       controller: widget.inputController,
+      style: Theme.of(context).textTheme.displayMedium,
       decoration: InputDecoration(
         labelText: widget.labelText,
         errorText: widget.errorText != "" ? widget.errorText : null,
