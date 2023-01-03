@@ -15,7 +15,10 @@ class ThemeColors {
 }
 
 void main() {
-  runApp(MaterialApp(
+  bool isAuthenticated = false;
+
+  runApp(
+    MaterialApp(
       title: "Workout Tracker",
       theme: ThemeData(
         primaryColor: ThemeColors.foregroundDefault,
@@ -58,7 +61,13 @@ void main() {
             cursorColor: ThemeColors.foregroundAccent),
         cardColor: ThemeColors.foregroundDefault,
       ),
-      home: const Home()));
+      routes: {
+        '/home': (context) => const Home(),
+        '/auth': (context) => const Authentication(),
+      },
+      initialRoute: isAuthenticated ? '/home' : '/auth',
+    ),
+  );
 }
 
 class NavigationInfo {
@@ -78,7 +87,7 @@ class Home extends StatefulWidget {
 
 class HomeState extends State<Home> {
   static List<NavigationInfo> navInfo = [
-    NavigationInfo(const Authentication(), "Home", Icons.home),
+    NavigationInfo(const Home(), "Home", Icons.home),
     NavigationInfo(const History(), "History", Icons.history_sharp)
   ];
   int currentNavIndex = 0;
