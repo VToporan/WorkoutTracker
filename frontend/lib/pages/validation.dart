@@ -31,6 +31,8 @@ class ValidateState extends State<Validate> {
   @override
   void initState() {
     super.initState();
+    resetErrorMessages();
+    clearControllers();
 
     if (widget.isLoginPage) {
       setLoginInputs();
@@ -57,7 +59,7 @@ class ValidateState extends State<Validate> {
           ),
           ErrorComponent(message: errorMessage),
           Padding(
-            padding: const EdgeInsets.only(top: 40),
+            padding: const EdgeInsets.only(top: 45),
             child: submitButton(),
           )
         ],
@@ -173,14 +175,6 @@ class ValidateState extends State<Validate> {
     ];
   }
 
-  void resetErrorMessages() {
-    userError = "";
-    emailError = "";
-    passError = "";
-    confirmError = "";
-    errorMessage = "";
-  }
-
   void validateUsername(String username) {
     if (username.isEmpty) {
       userError = "You have to choose a username";
@@ -212,5 +206,21 @@ class ValidateState extends State<Validate> {
       isError = true;
       return;
     }
+  }
+
+  void resetErrorMessages() {
+    userError = "";
+    emailError = "";
+    passError = "";
+    confirmError = "";
+    errorMessage = "";
+    isError = false;
+  }
+
+  void clearControllers() {
+    userController.clear();
+    emailController.clear();
+    passwordController.clear();
+    confirmController.clear();
   }
 }

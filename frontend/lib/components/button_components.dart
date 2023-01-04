@@ -21,7 +21,7 @@ class ButtonComponent extends StatelessWidget {
                     fit: BoxFit.fitWidth,
                     child: Text(
                       buttonText,
-                      style: Theme.of(context).textTheme.titleSmall,
+                      style: Theme.of(context).textTheme.titleMedium,
                       textScaleFactor: 0.9,
                     )),
               ),

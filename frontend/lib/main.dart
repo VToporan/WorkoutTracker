@@ -12,6 +12,7 @@ class ThemeColors {
   static const Color foregroundDefault = Color(0xFF504050);
   static const Color foregroundAccent = Color(0xFFAA99AA);
   static const Color backgroundDefault = Color(0xFF100010);
+  static const Color errorDefault = Color(0xFFD03070);
 }
 
 void main() {
@@ -34,14 +35,17 @@ void main() {
         ),
         inputDecorationTheme: const InputDecorationTheme(
           labelStyle:
-              TextStyle(fontSize: 35, color: ThemeColors.foregroundDefault),
+              TextStyle(fontSize: 30, color: ThemeColors.foregroundDefault),
           hintStyle:
               TextStyle(fontSize: 20, color: ThemeColors.foregroundDefault),
-          errorStyle:
-              TextStyle(fontSize: 15, color: ThemeColors.foregroundAccent),
+          errorStyle: TextStyle(fontSize: 16, color: ThemeColors.errorDefault),
           iconColor: ThemeColors.foregroundDefault,
           focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: ThemeColors.foregroundAccent)),
+          errorBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: ThemeColors.errorDefault)),
+          focusedErrorBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: ThemeColors.errorDefault)),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
@@ -55,7 +59,9 @@ void main() {
           titleSmall:
               TextStyle(fontSize: 20, color: ThemeColors.foregroundAccent),
           displayMedium:
-              TextStyle(fontSize: 30, color: ThemeColors.foregroundAccent),
+              TextStyle(fontSize: 25, color: ThemeColors.foregroundAccent),
+          displayLarge:
+              TextStyle(fontSize: 35, color: ThemeColors.errorDefault),
         ),
         textSelectionTheme: const TextSelectionThemeData(
             cursorColor: ThemeColors.foregroundAccent),
