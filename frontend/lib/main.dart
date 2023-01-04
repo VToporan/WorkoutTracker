@@ -87,7 +87,7 @@ class Home extends StatefulWidget {
 
 class HomeState extends State<Home> {
   static List<NavigationInfo> navInfo = [
-    NavigationInfo(const Home(), "Home", Icons.home),
+    NavigationInfo(const Exercises(), "Exercises", Icons.fitness_center),
     NavigationInfo(const History(), "History", Icons.history_sharp)
   ];
   int currentNavIndex = 0;

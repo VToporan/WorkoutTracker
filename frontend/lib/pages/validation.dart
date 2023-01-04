@@ -57,7 +57,7 @@ class ValidateState extends State<Validate> {
           ),
           ErrorComponent(message: errorMessage),
           Padding(
-            padding: const EdgeInsets.only(top: 20),
+            padding: const EdgeInsets.only(top: 40),
             child: submitButton(),
           )
         ],
@@ -65,39 +65,66 @@ class ValidateState extends State<Validate> {
     );
   }
 
+  Widget submitButton() {
+    if (widget.isLoginPage) {
+      return ButtonComponent(
+        buttonFunction: attemptLogin,
+        buttonText: "Login",
+      );
+    } else {
+      return ButtonComponent(
+        buttonFunction: attemptRegister,
+        buttonText: "Register",
+      );
+    }
+  }
+
   void attemptRegister() {
     String username = userController.text;
     String email = emailController.text;
     String password = passwordController.text;
-    String confirm = confirmController.text;
+    resetErrorMessages();
 
-    Map<String, dynamic> payload() => {
-          'username': username,
-          'email': email,
-          'password': password,
-        };
+    validateUsername(username);
+    validateEmail(email);
+    validatePassword(password);
+    validateConfirmPassword(password);
+
+    if (isError) {
+      errorMessage = "Invalid inputs";
+    }
+
+    Map<String, dynamic> payload = {
+      'username': username,
+      'email': email,
+      'password': password,
+    };
 
     setState(() {
       setRegisterInputs();
     });
-
-    resetErrorMessages();
   }
 
   void attemptLogin() {
     String username = userController.text;
     String password = passwordController.text;
+    resetErrorMessages();
 
-    Map<String, dynamic> payload() => {
-          'username': username,
-          'password': password,
-        };
+    validateUsername(username);
+    validatePassword(password);
+
+    if (isError) {
+      errorMessage = "Invalid inputs";
+    }
+
+    Map<String, dynamic> payload = {
+      'username': username,
+      'password': password,
+    };
 
     setState(() {
       setLoginInputs();
     });
-
-    resetErrorMessages();
   }
 
   void setRegisterInputs() {
@@ -151,19 +178,39 @@ class ValidateState extends State<Validate> {
     emailError = "";
     passError = "";
     confirmError = "";
+    errorMessage = "";
   }
 
-  Widget submitButton() {
-    if (widget.isLoginPage) {
-      return ButtonComponent(
-        buttonFunction: attemptLogin,
-        buttonText: "Login",
-      );
-    } else {
-      return ButtonComponent(
-        buttonFunction: attemptRegister,
-        buttonText: "Register",
-      );
+  void validateUsername(String username) {
+    if (username.isEmpty) {
+      userError = "You have to choose a username";
+      isError = true;
+      return;
+    }
+  }
+
+  void validateEmail(String email) {
+    if (email.isEmpty) {
+      emailError = "You have to provide an email";
+      isError = true;
+      return;
+    }
+  }
+
+  void validatePassword(String password) {
+    if (password.isEmpty) {
+      passError = "You have to choose a password";
+      isError = true;
+      return;
+    }
+  }
+
+  void validateConfirmPassword(String password) {
+    String confirm = confirmController.text;
+    if (confirm.isEmpty) {
+      confirmError = "You have to confirm the password";
+      isError = true;
+      return;
     }
   }
 }
