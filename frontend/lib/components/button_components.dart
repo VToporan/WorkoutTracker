@@ -9,18 +9,22 @@ class ButtonComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FractionallySizedBox(
-      widthFactor: 0.4,
-      child: ElevatedButton(
-        onPressed: buttonFunction,
-        child: FittedBox(
-            fit: BoxFit.fitWidth,
-            child: Text(
-              buttonText,
-              style: Theme.of(context).textTheme.titleMedium,
-              textScaleFactor: 0.9,
-            )),
-      ),
-    );
+    return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: SizedBox(
+            height: 70,
+            child: FractionallySizedBox(
+              widthFactor: 0.4,
+              child: ElevatedButton(
+                onPressed: buttonFunction,
+                child: FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: Text(
+                      buttonText,
+                      style: Theme.of(context).textTheme.titleMedium,
+                      textScaleFactor: 0.9,
+                    )),
+              ),
+            )));
   }
 }
