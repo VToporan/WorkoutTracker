@@ -12,53 +12,48 @@ class Exercises extends StatefulWidget {
 }
 
 class ExercisesState extends State<Exercises> {
-  List data = extractFromPayload();
+  List<CardComponent> cards = extractFromPayload();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: SlidableAutoCloseBehavior(
             child: ListView.builder(
-                itemCount: data == null ? 0 : data.length,
+                reverse: true,
+                itemCount: cards.length,
                 itemBuilder: (BuildContext context, int index) {
-                  var currentCard = data[index];
+                  var currentCard = cards[index];
                   return Slidable(
-                    key: ValueKey(currentCard["id"]),
-                    groupTag: "0",
-                    startActionPane: ActionPane(
-                      motion: const BehindMotion(),
-                      children: [
-                        SlidableAction(
-                          flex: 1,
-                          onPressed: (context) {
-                            setState(() {
-                              data.remove(currentCard);
-                            });
-                          },
-                          backgroundColor: Colors.red,
-                          foregroundColor: Colors.white,
-                          icon: Icons.delete,
-                          label: 'Delete',
-                        ),
-                        SlidableAction(
-                          onPressed: null,
-                          backgroundColor: Colors.grey,
-                          foregroundColor: Colors.white,
-                          icon: Icons.settings,
-                          label: 'Settings',
-                        ),
-                      ],
-                    ),
-                    child: CardComponent(
-                        title: currentCard["title"],
-                        subTitle: currentCard["subtitle"]),
-                  );
+                      key: ValueKey(currentCard.id),
+                      groupTag: "0",
+                      startActionPane: ActionPane(
+                        motion: const BehindMotion(),
+                        extentRatio: 0.25,
+                        openThreshold: 0.15,
+                        children: [
+                          SlidableAction(
+                            flex: 5,
+                            onPressed: (context) {
+                              setState(() {
+                                cards.remove(currentCard);
+                              });
+                            },
+                            backgroundColor: Theme.of(context).errorColor,
+                            foregroundColor: Theme.of(context).primaryColor,
+                            icon: Icons.delete,
+                            label: 'Delete',
+                          ),
+                        ],
+                      ),
+                      child: currentCard);
                 })));
   }
 
-  static List extractFromPayload() {
-    const data =
-        '[{ "title": "Title 1", "subtitle": "Subtitle 1", "id": 1},{ "title": "Title 2", "subtitle": "Subtitle 2", "id": 2}]';
-    return json.decode(data.toString());
+  static List<CardComponent> extractFromPayload() {
+    const data = [
+      {"title": "Title 1", "subtitle": "Subtitle 1", "id": 1},
+      {"title": "Title 2", "subtitle": "Subtitle 2", "id": 2}
+    ];
+    return data.map<CardComponent>(CardComponent.fromJson).toList();
   }
 }
