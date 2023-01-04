@@ -1,3 +1,4 @@
+import 'package:GainsTrack/components/modal_component.dart';
 import 'package:flutter/material.dart';
 
 class CardComponent extends StatelessWidget {
@@ -19,7 +20,14 @@ class CardComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return InkWell(
+      onTap: () {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return ModalComponent(id: id);
+            });
+      },
       child: Card(
         child: Column(
           mainAxisSize: MainAxisSize.min,
