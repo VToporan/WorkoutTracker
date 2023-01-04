@@ -14,6 +14,10 @@ class AuthenticationState extends State<Authentication> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("GainsTrack"),
+        centerTitle: true,
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -21,7 +25,7 @@ class AuthenticationState extends State<Authentication> {
           ButtonComponent(
             buttonText: 'Login',
             buttonFunction: () {
-              Navigator.pushReplacement(
+              Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: ((context) =>
@@ -31,7 +35,7 @@ class AuthenticationState extends State<Authentication> {
           ButtonComponent(
             buttonText: 'Register',
             buttonFunction: () {
-              Navigator.pushReplacement(
+              Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: ((context) =>

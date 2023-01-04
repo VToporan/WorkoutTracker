@@ -39,6 +39,32 @@ class ValidateState extends State<Validate> {
     }
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("GainsTrack"),
+        centerTitle: true,
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Column(
+              children: inputs,
+            ),
+          ),
+          ErrorComponent(message: errorMessage),
+          Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: submitButton(),
+          )
+        ],
+      ),
+    );
+  }
+
   void attemptRegister() {
     String username = userController.text;
     String email = emailController.text;
@@ -72,28 +98,6 @@ class ValidateState extends State<Validate> {
     });
 
     resetErrorMessages();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25),
-            child: Column(
-              children: inputs,
-            ),
-          ),
-          ErrorComponent(message: errorMessage),
-          Padding(
-            padding: const EdgeInsets.only(top: 20),
-            child: submitButton(),
-          )
-        ],
-      ),
-    );
   }
 
   void setRegisterInputs() {
