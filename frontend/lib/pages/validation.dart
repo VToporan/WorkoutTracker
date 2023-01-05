@@ -14,21 +14,25 @@ class Validate extends StatefulWidget {
 
 class ValidateState extends State<Validate> {
   InputComponent userInput = InputComponent(
+    key: GlobalKey<InputComponentState>(),
     labelText: "Username",
     inputController: TextEditingController(),
     isHidden: false,
   );
   InputComponent emailInput = InputComponent(
+    key: GlobalKey<InputComponentState>(),
     labelText: "Email",
     inputController: TextEditingController(),
     isHidden: false,
   );
   InputComponent passwordInput = InputComponent(
+    key: GlobalKey<InputComponentState>(),
     labelText: "Password",
     inputController: TextEditingController(),
     isHidden: true,
   );
   InputComponent confirmInput = InputComponent(
+    key: GlobalKey<InputComponentState>(),
     labelText: "Confirm password",
     inputController: TextEditingController(),
     isHidden: true,
@@ -59,7 +63,7 @@ class ValidateState extends State<Validate> {
           Padding(
             padding: const EdgeInsets.only(top: 45),
             child: submitButton(),
-          )
+          ),
         ],
       ),
     );
@@ -68,14 +72,15 @@ class ValidateState extends State<Validate> {
   @override
   void initState() {
     super.initState();
-    resetError();
-    clearControllers();
 
     if (widget.isLoginPage) {
       setLoginInputs();
     } else {
       setRegisterInputs();
     }
+
+    resetError();
+    clearControllers();
   }
 
   Widget submitButton() {
@@ -98,29 +103,28 @@ class ValidateState extends State<Validate> {
     String password = passwordInput.inputController.text;
     resetError();
 
+    verifyInputsNotEmpty();
+    if (isError) {
+      setState(() {
+        errorMessage = "Invalid inputs";
+      });
+      return;
+    }
     validateUsername(username);
     validateEmail(email);
     validatePassword(password);
     validateConfirmPassword(password);
-
-    if (isError) {
-      errorMessage = "Invalid inputs";
-    }
 
     Map<String, dynamic> payload = {
       'username': username,
       'email': email,
       'password': password,
     };
-
-    setState(() {
-      setRegisterInputs();
-    });
   }
 
   void attemptLogin() {
-    String username = userController.text;
-    String password = passwordController.text;
+    String username = userInput.inputController.text;
+    String password = passwordInput.inputController.text;
     resetError();
 
     validateUsername(username);
@@ -134,10 +138,6 @@ class ValidateState extends State<Validate> {
       'username': username,
       'password': password,
     };
-
-    setState(() {
-      setLoginInputs();
-    });
   }
 
   void setRegisterInputs() {
@@ -156,44 +156,32 @@ class ValidateState extends State<Validate> {
     ];
   }
 
-  void validateUsername(String username) {
-    if (username.isEmpty) {
-      isError = true;
-      return;
-    }
-  }
+  void validateUsername(String username) {}
 
-  void validateEmail(String email) {
-    if (email.isEmpty) {
-      isError = true;
-      return;
-    }
-  }
+  void validateEmail(String email) {}
 
-  void validatePassword(String password) {
-    if (password.isEmpty) {
-      isError = true;
-      return;
-    }
-  }
+  void validatePassword(String password) {}
 
-  void validateConfirmPassword(String password) {
-    String confirm = confirmController.text;
-    if (confirm.isEmpty) {
-      isError = true;
-      return;
-    }
-  }
+  void validateConfirmPassword(String password) {}
 
   void resetError() {
-    errorMessage = "";
-    isError = false;
+    setState(() {
+      isError = false;
+      errorMessage = "";
+    });
   }
 
   void clearControllers() {
-    userController.clear();
-    emailController.clear();
-    passwordController.clear();
-    confirmController.clear();
+    for (InputComponent input in inputs) {
+      input.inputController.clear();
+    }
+  }
+
+  void verifyInputsNotEmpty() {
+    for (InputComponent input in inputs) {
+      if (input.key.currentState!.isEmpty()) {
+        isError = true;
+      }
+    }
   }
 }

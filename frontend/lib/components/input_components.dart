@@ -5,13 +5,14 @@ class InputComponent extends StatefulWidget {
   final TextEditingController inputController;
   final String labelText;
   final bool isHidden;
+  final GlobalKey<InputComponentState> key;
 
-  const InputComponent(
-      {Key? key,
-      required this.inputController,
-      required this.labelText,
-      required this.isHidden})
-      : super(key: key);
+  const InputComponent({
+    required this.key,
+    required this.inputController,
+    required this.labelText,
+    required this.isHidden,
+  }) : super(key: key);
 
   @override
   InputComponentState createState() => InputComponentState();
@@ -47,10 +48,15 @@ class InputComponentState extends State<InputComponent> {
 
   bool isEmpty() {
     if (widget.inputController.text.isEmpty) {
-      errorText = "${widget.labelText} can't be empty";
+      setState(() {
+        errorText = "${widget.labelText} can't be empty";
+      });
       return true;
     }
 
+    setState(() {
+      errorText = "";
+    });
     return false;
   }
 
@@ -62,11 +68,11 @@ class InputComponentState extends State<InputComponent> {
 }
 
 class NumberInputComponent extends InputComponent {
-  const NumberInputComponent(
-      {super.key,
-      required TextEditingController inputController,
-      required String labelText})
-      : super(
+  const NumberInputComponent({
+    required super.key,
+    required TextEditingController inputController,
+    required String labelText,
+  }) : super(
             inputController: inputController,
             labelText: labelText,
             isHidden: false);
@@ -92,11 +98,11 @@ class NumberInputComponentState extends InputComponentState {
 }
 
 class LongInputComponent extends InputComponent {
-  const LongInputComponent(
-      {super.key,
-      required TextEditingController inputController,
-      required String labelText})
-      : super(
+  const LongInputComponent({
+    required super.key,
+    required TextEditingController inputController,
+    required String labelText,
+  }) : super(
             inputController: inputController,
             labelText: labelText,
             isHidden: false);
