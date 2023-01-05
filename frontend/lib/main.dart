@@ -67,6 +67,7 @@ void main() {
             cursorColor: ThemeColors.foregroundAccent),
         cardColor: ThemeColors.foregroundDefault,
         errorColor: ThemeColors.errorDefault,
+        dialogBackgroundColor: ThemeColors.backgroundDefault,
       ),
       routes: {
         '/home': (context) => const Home(),

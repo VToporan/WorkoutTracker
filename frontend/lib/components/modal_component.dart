@@ -13,32 +13,31 @@ class ModalComponent extends StatefulWidget {
 }
 
 class ModalComponentState extends State<ModalComponent> {
-  static TextEditingController controller = TextEditingController();
+  static TextEditingController setController = TextEditingController();
+  static TextEditingController repController = TextEditingController();
+  static TextEditingController weightController = TextEditingController();
+  static TextEditingController notesController = TextEditingController();
 
   static List<InputComponent> inputs = [
-    InputComponent(
-      inputController: controller,
-      labelText: "labelText",
-      errorText: "errorText",
-      isHidden: false,
+    NumberInputComponent(
+      inputController: setController,
+      labelText: "Sets",
+      errorText: "",
     ),
-    InputComponent(
-      inputController: controller,
-      labelText: "labelText",
-      errorText: "errorText",
-      isHidden: false,
+    NumberInputComponent(
+      inputController: repController,
+      labelText: "Reps",
+      errorText: "",
     ),
-    InputComponent(
-      inputController: controller,
-      labelText: "labelText",
-      errorText: "errorText",
-      isHidden: false,
+    NumberInputComponent(
+      inputController: weightController,
+      labelText: "Weight",
+      errorText: "",
     ),
-    InputComponent(
-      inputController: controller,
-      labelText: "labelText",
-      errorText: "errorText",
-      isHidden: false,
+    LongInputComponent(
+      inputController: notesController,
+      labelText: "Notes",
+      errorText: "",
     ),
   ];
 
