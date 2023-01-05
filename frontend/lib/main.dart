@@ -54,10 +54,11 @@ void main() {
           ),
         ),
         textTheme: const TextTheme(
-          titleMedium:
+          titleLarge:
               TextStyle(fontSize: 30, color: ThemeColors.foregroundAccent),
-          titleSmall:
-              TextStyle(fontSize: 20, color: ThemeColors.foregroundAccent),
+          titleMedium:
+              TextStyle(fontSize: 25, color: ThemeColors.foregroundAccent),
+          titleSmall: TextStyle(fontSize: 15, color: ThemeColors.buttonAccent),
           displayMedium:
               TextStyle(fontSize: 25, color: ThemeColors.foregroundAccent),
           displayLarge:

@@ -52,8 +52,8 @@ class ExercisesState extends State<Exercises> {
 
   static List<CardComponent> extractFromPayload() {
     const data = [
-      {"title": "Title 1", "subtitle": "Subtitle 1", "id": 1},
-      {"title": "Title 2", "subtitle": "Subtitle 2", "id": 2}
+      {"title": "Bench press", "subtitle": "Last edited: 3 days ago", "id": 1},
+      {"title": "Biceps curls", "subtitle": "Last edited: 4 weeks ago", "id": 2}
     ];
     return data.map<CardComponent>(CardComponent.fromJson).toList();
   }
