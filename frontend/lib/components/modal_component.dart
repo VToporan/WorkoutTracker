@@ -58,12 +58,26 @@ class ModalComponentState extends State<ModalComponent> {
             ErrorComponent(message: errorMessage),
             Padding(
               padding: const EdgeInsets.only(top: 45),
-              child: ButtonComponent(
-                buttonFunction: () {},
-                buttonText: "Login",
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                      child: ButtonComponent(
+                    buttonFunction: submitData,
+                    buttonText: "Confirm",
+                  )),
+                  Expanded(
+                      child: ButtonComponent(
+                    buttonFunction: () => {Navigator.pop(context, true)},
+                    buttonText: "Cancel",
+                  )),
+                ],
               ),
             )
           ]),
     );
   }
+
+  void submitData() {}
 }
