@@ -16,7 +16,7 @@ class ThemeColors {
 }
 
 void main() {
-  bool isAuthenticated = true;
+  bool isAuthenticated = false;
 
   runApp(
     MaterialApp(

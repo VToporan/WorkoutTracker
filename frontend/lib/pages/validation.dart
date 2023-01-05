@@ -13,28 +13,31 @@ class Validate extends StatefulWidget {
 }
 
 class ValidateState extends State<Validate> {
-  static TextEditingController userController = TextEditingController();
-  static TextEditingController emailController = TextEditingController();
-  static TextEditingController passwordController = TextEditingController();
-  static TextEditingController confirmController = TextEditingController();
+  InputComponent userInput = InputComponent(
+    labelText: "Username",
+    inputController: TextEditingController(),
+    isHidden: false,
+  );
+  InputComponent emailInput = InputComponent(
+    labelText: "Email",
+    inputController: TextEditingController(),
+    isHidden: false,
+  );
+  InputComponent passwordInput = InputComponent(
+    labelText: "Password",
+    inputController: TextEditingController(),
+    isHidden: true,
+  );
+  InputComponent confirmInput = InputComponent(
+    labelText: "Confirm password",
+    inputController: TextEditingController(),
+    isHidden: true,
+  );
 
   static bool isError = false;
   static String errorMessage = "";
 
   late List<InputComponent> inputs;
-
-  @override
-  void initState() {
-    super.initState();
-    resetError();
-    clearControllers();
-
-    if (widget.isLoginPage) {
-      setLoginInputs();
-    } else {
-      setRegisterInputs();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +65,19 @@ class ValidateState extends State<Validate> {
     );
   }
 
+  @override
+  void initState() {
+    super.initState();
+    resetError();
+    clearControllers();
+
+    if (widget.isLoginPage) {
+      setLoginInputs();
+    } else {
+      setRegisterInputs();
+    }
+  }
+
   Widget submitButton() {
     if (widget.isLoginPage) {
       return ButtonComponent(
@@ -77,9 +93,9 @@ class ValidateState extends State<Validate> {
   }
 
   void attemptRegister() {
-    String username = userController.text;
-    String email = emailController.text;
-    String password = passwordController.text;
+    String username = userInput.inputController.text;
+    String email = emailInput.inputController.text;
+    String password = passwordInput.inputController.text;
     resetError();
 
     validateUsername(username);
@@ -126,41 +142,17 @@ class ValidateState extends State<Validate> {
 
   void setRegisterInputs() {
     inputs = [
-      InputComponent(
-        labelText: "Username",
-        inputController: userController,
-        isHidden: false,
-      ),
-      InputComponent(
-        labelText: "Email",
-        inputController: emailController,
-        isHidden: false,
-      ),
-      InputComponent(
-        labelText: "Password",
-        inputController: passwordController,
-        isHidden: true,
-      ),
-      InputComponent(
-        labelText: "Confirm password",
-        inputController: confirmController,
-        isHidden: true,
-      ),
+      userInput,
+      emailInput,
+      passwordInput,
+      confirmInput,
     ];
   }
 
   void setLoginInputs() {
     inputs = [
-      InputComponent(
-        inputController: userController,
-        labelText: "Username",
-        isHidden: false,
-      ),
-      InputComponent(
-        inputController: passwordController,
-        labelText: "Password",
-        isHidden: true,
-      ),
+      userInput,
+      passwordInput,
     ];
   }
 

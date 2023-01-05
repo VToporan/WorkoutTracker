@@ -7,10 +7,11 @@ class InputComponent extends StatefulWidget {
   final bool isHidden;
 
   const InputComponent(
-      {super.key,
+      {Key? key,
       required this.inputController,
       required this.labelText,
-      required this.isHidden});
+      required this.isHidden})
+      : super(key: key);
 
   @override
   InputComponentState createState() => InputComponentState();
@@ -44,8 +45,9 @@ class InputComponentState extends State<InputComponent> {
     );
   }
 
-  bool checkIsEmpty() {
+  bool isEmpty() {
     if (widget.inputController.text.isEmpty) {
+      errorText = "${widget.labelText} can't be empty";
       return true;
     }
 
