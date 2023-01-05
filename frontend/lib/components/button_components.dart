@@ -14,7 +14,7 @@ class ButtonComponent extends StatelessWidget {
         child: SizedBox(
             height: 60,
             child: FractionallySizedBox(
-              widthFactor: 0.7,
+              widthFactor: 0.9,
               child: ElevatedButton(
                 onPressed: buttonFunction,
                 child: FittedBox(

@@ -36,6 +36,11 @@ class ModalComponentState extends State<ModalComponent> {
     labelText: "Notes",
   );
 
+  DateInputComponent dateInput = DateInputComponent(
+      key: GlobalKey<InputComponentState>(),
+      inputController: TextEditingController(),
+      labelText: "Date");
+
   late List<InputComponent> inputs;
   bool isError = false;
   String errorMessage = "";
@@ -47,6 +52,7 @@ class ModalComponentState extends State<ModalComponent> {
       setsInput,
       repsInput,
       weightInput,
+      dateInput,
       notesInput,
     ];
   }
@@ -66,20 +72,20 @@ class ModalComponentState extends State<ModalComponent> {
             ),
             ErrorComponent(message: errorMessage),
             Padding(
-              padding: const EdgeInsets.only(top: 45),
+              padding: const EdgeInsets.symmetric(horizontal: 25),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Expanded(
                       child: ButtonComponent(
-                    buttonFunction: submitData,
-                    buttonText: "Confirm",
+                    buttonFunction: () => {Navigator.pop(context, true)},
+                    buttonText: "Cancel",
                   )),
                   Expanded(
                       child: ButtonComponent(
-                    buttonFunction: () => {Navigator.pop(context, true)},
-                    buttonText: "Cancel",
+                    buttonFunction: submitData,
+                    buttonText: "Confirm",
                   )),
                 ],
               ),
