@@ -22,22 +22,18 @@ class ModalComponentState extends State<ModalComponent> {
     NumberInputComponent(
       inputController: setController,
       labelText: "Sets",
-      errorText: "",
     ),
     NumberInputComponent(
       inputController: repController,
       labelText: "Reps",
-      errorText: "",
     ),
     NumberInputComponent(
       inputController: weightController,
       labelText: "Weight",
-      errorText: "",
     ),
     LongInputComponent(
       inputController: notesController,
       labelText: "Notes",
-      errorText: "",
     ),
   ];
 

@@ -18,11 +18,6 @@ class ValidateState extends State<Validate> {
   static TextEditingController passwordController = TextEditingController();
   static TextEditingController confirmController = TextEditingController();
 
-  static String userError = "";
-  static String emailError = "";
-  static String passError = "";
-  static String confirmError = "";
-
   static bool isError = false;
   static String errorMessage = "";
 
@@ -31,7 +26,7 @@ class ValidateState extends State<Validate> {
   @override
   void initState() {
     super.initState();
-    resetErrorMessages();
+    resetError();
     clearControllers();
 
     if (widget.isLoginPage) {
@@ -85,7 +80,7 @@ class ValidateState extends State<Validate> {
     String username = userController.text;
     String email = emailController.text;
     String password = passwordController.text;
-    resetErrorMessages();
+    resetError();
 
     validateUsername(username);
     validateEmail(email);
@@ -110,7 +105,7 @@ class ValidateState extends State<Validate> {
   void attemptLogin() {
     String username = userController.text;
     String password = passwordController.text;
-    resetErrorMessages();
+    resetError();
 
     validateUsername(username);
     validatePassword(password);
@@ -133,25 +128,21 @@ class ValidateState extends State<Validate> {
     inputs = [
       InputComponent(
         labelText: "Username",
-        errorText: userError,
         inputController: userController,
         isHidden: false,
       ),
       InputComponent(
         labelText: "Email",
-        errorText: emailError,
         inputController: emailController,
         isHidden: false,
       ),
       InputComponent(
         labelText: "Password",
-        errorText: passError,
         inputController: passwordController,
         isHidden: true,
       ),
       InputComponent(
         labelText: "Confirm password",
-        errorText: confirmError,
         inputController: confirmController,
         isHidden: true,
       ),
@@ -163,13 +154,11 @@ class ValidateState extends State<Validate> {
       InputComponent(
         inputController: userController,
         labelText: "Username",
-        errorText: userError,
         isHidden: false,
       ),
       InputComponent(
         inputController: passwordController,
         labelText: "Password",
-        errorText: passError,
         isHidden: true,
       ),
     ];
@@ -177,7 +166,6 @@ class ValidateState extends State<Validate> {
 
   void validateUsername(String username) {
     if (username.isEmpty) {
-      userError = "You have to choose a username";
       isError = true;
       return;
     }
@@ -185,7 +173,6 @@ class ValidateState extends State<Validate> {
 
   void validateEmail(String email) {
     if (email.isEmpty) {
-      emailError = "You have to provide an email";
       isError = true;
       return;
     }
@@ -193,7 +180,6 @@ class ValidateState extends State<Validate> {
 
   void validatePassword(String password) {
     if (password.isEmpty) {
-      passError = "You have to choose a password";
       isError = true;
       return;
     }
@@ -202,17 +188,12 @@ class ValidateState extends State<Validate> {
   void validateConfirmPassword(String password) {
     String confirm = confirmController.text;
     if (confirm.isEmpty) {
-      confirmError = "You have to confirm the password";
       isError = true;
       return;
     }
   }
 
-  void resetErrorMessages() {
-    userError = "";
-    emailError = "";
-    passError = "";
-    confirmError = "";
+  void resetError() {
     errorMessage = "";
     isError = false;
   }
