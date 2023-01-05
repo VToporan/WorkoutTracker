@@ -169,13 +169,6 @@ class DateInputComponentState extends InputComponentState {
           initialDate: DateTime.now(),
           firstDate: DateTime(2020),
           lastDate: DateTime(2100),
-          builder: (context, child) {
-            return Theme(
-                data: Theme.of(context).copyWith(
-                  colorScheme: Theme.of(context).colorScheme,
-                ),
-                child: child!);
-          },
         );
 
         String formattedDate =

@@ -7,11 +7,12 @@ import 'pages/authentication.dart';
 class ThemeColors {
   ThemeColors._();
 
-  static const Color buttonDefault = Color(0xFF403A40);
+  static const Color buttonDefault = Color(0xFF302030);
   static const Color buttonAccent = Color(0xFF908090);
-  static const Color foregroundDefault = Color(0xFF504550);
+  static const Color foregroundDefault = Color(0xFF605560);
   static const Color foregroundAccent = Color(0xFFAA99AA);
   static const Color backgroundDefault = Color(0xFF100010);
+  static const Color backgroundAccent = Color(0xFF1A0A1A);
   static const Color errorDefault = Color(0xFFD03070);
 }
 
@@ -25,11 +26,11 @@ void main() {
         primaryColor: ThemeColors.foregroundAccent,
         scaffoldBackgroundColor: ThemeColors.backgroundDefault,
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-          backgroundColor: ThemeColors.buttonDefault,
-          selectedItemColor: ThemeColors.buttonAccent,
-        ),
+            backgroundColor: ThemeColors.backgroundAccent,
+            selectedItemColor: ThemeColors.foregroundAccent,
+            unselectedItemColor: ThemeColors.foregroundDefault),
         appBarTheme: const AppBarTheme(
-          backgroundColor: ThemeColors.buttonDefault,
+          backgroundColor: ThemeColors.backgroundAccent,
           titleTextStyle:
               TextStyle(fontSize: 30, color: ThemeColors.buttonAccent),
         ),
@@ -72,11 +73,11 @@ void main() {
         ),
         textSelectionTheme: const TextSelectionThemeData(
             cursorColor: ThemeColors.foregroundAccent),
-        cardColor: ThemeColors.foregroundDefault,
+        cardColor: ThemeColors.buttonDefault,
         errorColor: ThemeColors.errorDefault,
         dialogBackgroundColor: ThemeColors.backgroundDefault,
-        colorScheme: const ColorScheme.dark(
-          primary: ThemeColors.buttonDefault,
+        colorScheme: const ColorScheme.light(
+          primary: ThemeColors.backgroundAccent,
           onPrimary: ThemeColors.foregroundAccent,
           onSurface: ThemeColors.buttonAccent,
         ),

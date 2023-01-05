@@ -12,13 +12,10 @@ class ErrorComponentState extends State<ErrorComponent> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 35),
-      child: widget.message != ""
-          ? Text(
-              widget.message,
-              style: Theme.of(context).textTheme.displayLarge,
-            )
-          : null,
-    );
+        padding: const EdgeInsets.only(top: 25),
+        child: Text(
+          widget.message,
+          style: Theme.of(context).textTheme.displayLarge,
+        ));
   }
 }
