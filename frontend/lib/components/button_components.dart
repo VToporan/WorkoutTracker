@@ -12,9 +12,9 @@ class ButtonComponent extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: SizedBox(
-            height: 70,
+            height: 60,
             child: FractionallySizedBox(
-              widthFactor: 0.4,
+              widthFactor: 0.7,
               child: ElevatedButton(
                 onPressed: buttonFunction,
                 child: FittedBox(

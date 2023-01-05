@@ -9,20 +9,20 @@ class ThemeColors {
 
   static const Color buttonDefault = Color(0xFF403A40);
   static const Color buttonAccent = Color(0xFF908090);
-  static const Color foregroundDefault = Color(0xFF504050);
+  static const Color foregroundDefault = Color(0xFF504550);
   static const Color foregroundAccent = Color(0xFFAA99AA);
   static const Color backgroundDefault = Color(0xFF100010);
   static const Color errorDefault = Color(0xFFD03070);
 }
 
 void main() {
-  bool isAuthenticated = false;
+  bool isAuthenticated = true;
 
   runApp(
     MaterialApp(
       title: "Workout Tracker",
       theme: ThemeData(
-        primaryColor: ThemeColors.foregroundDefault,
+        primaryColor: ThemeColors.foregroundAccent,
         scaffoldBackgroundColor: ThemeColors.backgroundDefault,
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           backgroundColor: ThemeColors.buttonDefault,
@@ -66,6 +66,8 @@ void main() {
         textSelectionTheme: const TextSelectionThemeData(
             cursorColor: ThemeColors.foregroundAccent),
         cardColor: ThemeColors.foregroundDefault,
+        errorColor: ThemeColors.errorDefault,
+        dialogBackgroundColor: ThemeColors.backgroundDefault,
       ),
       routes: {
         '/home': (context) => const Home(),
