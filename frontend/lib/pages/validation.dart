@@ -13,33 +13,35 @@ class Validate extends StatefulWidget {
 }
 
 class ValidateState extends State<Validate> {
-  static TextEditingController userController = TextEditingController();
-  static TextEditingController emailController = TextEditingController();
-  static TextEditingController passwordController = TextEditingController();
-  static TextEditingController confirmController = TextEditingController();
-
-  static String userError = "";
-  static String emailError = "";
-  static String passError = "";
-  static String confirmError = "";
+  InputComponent userInput = InputComponent(
+    key: GlobalKey<InputComponentState>(),
+    labelText: "Username",
+    inputController: TextEditingController(),
+    isHidden: false,
+  );
+  InputComponent emailInput = InputComponent(
+    key: GlobalKey<InputComponentState>(),
+    labelText: "Email",
+    inputController: TextEditingController(),
+    isHidden: false,
+  );
+  InputComponent passwordInput = InputComponent(
+    key: GlobalKey<InputComponentState>(),
+    labelText: "Password",
+    inputController: TextEditingController(),
+    isHidden: true,
+  );
+  InputComponent confirmInput = InputComponent(
+    key: GlobalKey<InputComponentState>(),
+    labelText: "Confirm password",
+    inputController: TextEditingController(),
+    isHidden: true,
+  );
 
   static bool isError = false;
   static String errorMessage = "";
 
   late List<InputComponent> inputs;
-
-  @override
-  void initState() {
-    super.initState();
-    resetErrorMessages();
-    clearControllers();
-
-    if (widget.isLoginPage) {
-      setLoginInputs();
-    } else {
-      setRegisterInputs();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,10 +63,24 @@ class ValidateState extends State<Validate> {
           Padding(
             padding: const EdgeInsets.only(top: 45),
             child: submitButton(),
-          )
+          ),
         ],
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.isLoginPage) {
+      setLoginInputs();
+    } else {
+      setRegisterInputs();
+    }
+
+    resetError();
+    clearControllers();
   }
 
   Widget submitButton() {
@@ -82,35 +98,34 @@ class ValidateState extends State<Validate> {
   }
 
   void attemptRegister() {
-    String username = userController.text;
-    String email = emailController.text;
-    String password = passwordController.text;
-    resetErrorMessages();
+    String username = userInput.inputController.text;
+    String email = emailInput.inputController.text;
+    String password = passwordInput.inputController.text;
+    resetError();
 
+    verifyInputsNotEmpty();
+    if (isError) {
+      setState(() {
+        errorMessage = "Invalid inputs";
+      });
+      return;
+    }
     validateUsername(username);
     validateEmail(email);
     validatePassword(password);
     validateConfirmPassword(password);
-
-    if (isError) {
-      errorMessage = "Invalid inputs";
-    }
 
     Map<String, dynamic> payload = {
       'username': username,
       'email': email,
       'password': password,
     };
-
-    setState(() {
-      setRegisterInputs();
-    });
   }
 
   void attemptLogin() {
-    String username = userController.text;
-    String password = passwordController.text;
-    resetErrorMessages();
+    String username = userInput.inputController.text;
+    String password = passwordInput.inputController.text;
+    resetError();
 
     validateUsername(username);
     validatePassword(password);
@@ -123,104 +138,50 @@ class ValidateState extends State<Validate> {
       'username': username,
       'password': password,
     };
-
-    setState(() {
-      setLoginInputs();
-    });
   }
 
   void setRegisterInputs() {
     inputs = [
-      InputComponent(
-        labelText: "Username",
-        errorText: userError,
-        inputController: userController,
-        isHidden: false,
-      ),
-      InputComponent(
-        labelText: "Email",
-        errorText: emailError,
-        inputController: emailController,
-        isHidden: false,
-      ),
-      InputComponent(
-        labelText: "Password",
-        errorText: passError,
-        inputController: passwordController,
-        isHidden: true,
-      ),
-      InputComponent(
-        labelText: "Confirm password",
-        errorText: confirmError,
-        inputController: confirmController,
-        isHidden: true,
-      ),
+      userInput,
+      emailInput,
+      passwordInput,
+      confirmInput,
     ];
   }
 
   void setLoginInputs() {
     inputs = [
-      InputComponent(
-        inputController: userController,
-        labelText: "Username",
-        errorText: userError,
-        isHidden: false,
-      ),
-      InputComponent(
-        inputController: passwordController,
-        labelText: "Password",
-        errorText: passError,
-        isHidden: true,
-      ),
+      userInput,
+      passwordInput,
     ];
   }
 
-  void validateUsername(String username) {
-    if (username.isEmpty) {
-      userError = "You have to choose a username";
-      isError = true;
-      return;
-    }
-  }
+  void validateUsername(String username) {}
 
-  void validateEmail(String email) {
-    if (email.isEmpty) {
-      emailError = "You have to provide an email";
-      isError = true;
-      return;
-    }
-  }
+  void validateEmail(String email) {}
 
-  void validatePassword(String password) {
-    if (password.isEmpty) {
-      passError = "You have to choose a password";
-      isError = true;
-      return;
-    }
-  }
+  void validatePassword(String password) {}
 
-  void validateConfirmPassword(String password) {
-    String confirm = confirmController.text;
-    if (confirm.isEmpty) {
-      confirmError = "You have to confirm the password";
-      isError = true;
-      return;
-    }
-  }
+  void validateConfirmPassword(String password) {}
 
-  void resetErrorMessages() {
-    userError = "";
-    emailError = "";
-    passError = "";
-    confirmError = "";
-    errorMessage = "";
-    isError = false;
+  void resetError() {
+    setState(() {
+      isError = false;
+      errorMessage = "";
+    });
   }
 
   void clearControllers() {
-    userController.clear();
-    emailController.clear();
-    passwordController.clear();
-    confirmController.clear();
+    for (InputComponent input in inputs) {
+      input.inputController.clear();
+    }
+  }
+
+  void verifyInputsNotEmpty() {
+    for (InputComponent input in inputs) {
+      if (input.key.currentState!.isEmpty()) {
+        isError = true;
+      }
+    }
   }
 }

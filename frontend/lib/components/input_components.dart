@@ -4,15 +4,15 @@ import 'package:flutter/services.dart';
 class InputComponent extends StatefulWidget {
   final TextEditingController inputController;
   final String labelText;
-  final String errorText;
   final bool isHidden;
+  final GlobalKey<InputComponentState> key;
 
-  const InputComponent(
-      {super.key,
-      required this.inputController,
-      required this.labelText,
-      required this.errorText,
-      required this.isHidden});
+  const InputComponent({
+    required this.key,
+    required this.inputController,
+    required this.labelText,
+    required this.isHidden,
+  }) : super(key: key);
 
   @override
   InputComponentState createState() => InputComponentState();
@@ -20,6 +20,7 @@ class InputComponent extends StatefulWidget {
 
 class InputComponentState extends State<InputComponent> {
   bool isVisible = true;
+  String errorText = "";
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class InputComponentState extends State<InputComponent> {
       style: Theme.of(context).textTheme.displayMedium,
       decoration: InputDecoration(
         labelText: widget.labelText,
-        errorText: widget.errorText != "" ? widget.errorText : null,
+        errorText: errorText != "" ? errorText : null,
         suffixIcon: widget.isHidden
             ? IconButton(
                 icon: Icon(
@@ -44,18 +45,36 @@ class InputComponentState extends State<InputComponent> {
       ),
     );
   }
+
+  bool isEmpty() {
+    if (widget.inputController.text.isEmpty) {
+      setState(() {
+        errorText = "${widget.labelText} can't be empty";
+      });
+      return true;
+    }
+
+    setState(() {
+      errorText = "";
+    });
+    return false;
+  }
+
+  void setErrorText(String errorMessage) {
+    setState(() {
+      errorText = errorMessage;
+    });
+  }
 }
 
 class NumberInputComponent extends InputComponent {
-  const NumberInputComponent(
-      {super.key,
-      required TextEditingController inputController,
-      required String errorText,
-      required String labelText})
-      : super(
+  const NumberInputComponent({
+    required super.key,
+    required TextEditingController inputController,
+    required String labelText,
+  }) : super(
             inputController: inputController,
             labelText: labelText,
-            errorText: errorText,
             isHidden: false);
 
   @override
@@ -72,22 +91,20 @@ class NumberInputComponentState extends InputComponentState {
       style: Theme.of(context).textTheme.displayMedium,
       decoration: InputDecoration(
         labelText: widget.labelText,
-        errorText: widget.errorText != "" ? widget.errorText : null,
+        errorText: errorText != "" ? errorText : null,
       ),
     );
   }
 }
 
 class LongInputComponent extends InputComponent {
-  const LongInputComponent(
-      {super.key,
-      required TextEditingController inputController,
-      required String errorText,
-      required String labelText})
-      : super(
+  const LongInputComponent({
+    required super.key,
+    required TextEditingController inputController,
+    required String labelText,
+  }) : super(
             inputController: inputController,
             labelText: labelText,
-            errorText: errorText,
             isHidden: false);
 
   @override
@@ -104,7 +121,7 @@ class LongInputComponentState extends InputComponentState {
       maxLines: 5,
       decoration: InputDecoration(
         labelText: widget.labelText,
-        errorText: widget.errorText != "" ? widget.errorText : null,
+        errorText: errorText != "" ? errorText : null,
       ),
     );
   }

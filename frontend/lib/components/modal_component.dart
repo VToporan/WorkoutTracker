@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'button_components.dart';
 import 'error_component.dart';
+import 'input_components.dart';
 
 class ModalComponent extends StatefulWidget {
   final int id;
@@ -13,35 +14,43 @@ class ModalComponent extends StatefulWidget {
 }
 
 class ModalComponentState extends State<ModalComponent> {
-  static TextEditingController setController = TextEditingController();
-  static TextEditingController repController = TextEditingController();
-  static TextEditingController weightController = TextEditingController();
-  static TextEditingController notesController = TextEditingController();
+  NumberInputComponent setsInput = NumberInputComponent(
+    key: GlobalKey<InputComponentState>(),
+    inputController: TextEditingController(),
+    labelText: "Sets",
+  );
 
-  static List<InputComponent> inputs = [
-    NumberInputComponent(
-      inputController: setController,
-      labelText: "Sets",
-      errorText: "",
-    ),
-    NumberInputComponent(
-      inputController: repController,
-      labelText: "Reps",
-      errorText: "",
-    ),
-    NumberInputComponent(
-      inputController: weightController,
-      labelText: "Weight",
-      errorText: "",
-    ),
-    LongInputComponent(
-      inputController: notesController,
-      labelText: "Notes",
-      errorText: "",
-    ),
-  ];
+  NumberInputComponent repsInput = NumberInputComponent(
+    key: GlobalKey<InputComponentState>(),
+    inputController: TextEditingController(),
+    labelText: "Reps",
+  );
+  NumberInputComponent weightInput = NumberInputComponent(
+    key: GlobalKey<InputComponentState>(),
+    inputController: TextEditingController(),
+    labelText: "Weight",
+  );
+  LongInputComponent notesInput = LongInputComponent(
+    key: GlobalKey<InputComponentState>(),
+    inputController: TextEditingController(),
+    labelText: "Notes",
+  );
 
-  var errorMessage = "message";
+  late List<InputComponent> inputs;
+  bool isError = false;
+  String errorMessage = "";
+
+  @override
+  void initState() {
+    super.initState();
+    inputs = [
+      setsInput,
+      repsInput,
+      weightInput,
+      notesInput,
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -79,5 +88,36 @@ class ModalComponentState extends State<ModalComponent> {
     );
   }
 
-  void submitData() {}
+  void submitData() {
+    resetError();
+    verifyInputsNotEmpty();
+    if (isError) {
+      setState(() {
+        errorMessage = "Invalid inputs";
+      });
+    }
+  }
+
+  void verifyInputsNotEmpty() {
+    for (InputComponent input in inputs) {
+      if (input != notesInput) {
+        if (input.key.currentState!.isEmpty()) {
+          isError = true;
+        }
+      }
+    }
+  }
+
+  void resetError() {
+    setState(() {
+      isError = false;
+      errorMessage = "";
+    });
+  }
+
+  void clearControllers() {
+    for (InputComponent input in inputs) {
+      input.inputController.clear();
+    }
+  }
 }
