@@ -53,6 +53,12 @@ void main() {
             foregroundColor: ThemeColors.buttonAccent,
           ),
         ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            backgroundColor: ThemeColors.buttonDefault,
+            foregroundColor: ThemeColors.buttonAccent,
+          ),
+        ),
         textTheme: const TextTheme(
           titleLarge:
               TextStyle(fontSize: 30, color: ThemeColors.foregroundAccent),
@@ -69,6 +75,11 @@ void main() {
         cardColor: ThemeColors.foregroundDefault,
         errorColor: ThemeColors.errorDefault,
         dialogBackgroundColor: ThemeColors.backgroundDefault,
+        colorScheme: const ColorScheme.dark(
+          primary: ThemeColors.buttonDefault,
+          onPrimary: ThemeColors.foregroundAccent,
+          onSurface: ThemeColors.buttonAccent,
+        ),
       ),
       routes: {
         '/home': (context) => const Home(),

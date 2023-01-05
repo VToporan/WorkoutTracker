@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 class InputComponent extends StatefulWidget {
   final TextEditingController inputController;
@@ -73,9 +74,10 @@ class NumberInputComponent extends InputComponent {
     required TextEditingController inputController,
     required String labelText,
   }) : super(
-            inputController: inputController,
-            labelText: labelText,
-            isHidden: false);
+          inputController: inputController,
+          labelText: labelText,
+          isHidden: false,
+        );
 
   @override
   NumberInputComponentState createState() => NumberInputComponentState();
@@ -103,9 +105,10 @@ class LongInputComponent extends InputComponent {
     required TextEditingController inputController,
     required String labelText,
   }) : super(
-            inputController: inputController,
-            labelText: labelText,
-            isHidden: false);
+          inputController: inputController,
+          labelText: labelText,
+          isHidden: false,
+        );
 
   @override
   LongInputComponentState createState() => LongInputComponentState();
@@ -123,6 +126,63 @@ class LongInputComponentState extends InputComponentState {
         labelText: widget.labelText,
         errorText: errorText != "" ? errorText : null,
       ),
+    );
+  }
+}
+
+class DateInputComponent extends InputComponent {
+  const DateInputComponent({
+    required super.key,
+    required TextEditingController inputController,
+    required String labelText,
+  }) : super(
+          inputController: inputController,
+          labelText: labelText,
+          isHidden: false,
+        );
+
+  @override
+  DateInputComponentState createState() => DateInputComponentState();
+}
+
+class DateInputComponentState extends InputComponentState {
+  @override
+  void initState() {
+    super.initState();
+    widget.inputController.text =
+        DateFormat('dd.MM.yyyy').format(DateTime.now());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: widget.inputController,
+      style: Theme.of(context).textTheme.displayMedium,
+      decoration: InputDecoration(
+        labelText: widget.labelText,
+        errorText: errorText != "" ? errorText : null,
+      ),
+      readOnly: true,
+      onTap: () async {
+        DateTime? pickedDate = await showDatePicker(
+          context: context,
+          initialDate: DateTime.now(),
+          firstDate: DateTime(2020),
+          lastDate: DateTime(2100),
+          builder: (context, child) {
+            return Theme(
+                data: Theme.of(context).copyWith(
+                  colorScheme: Theme.of(context).colorScheme,
+                ),
+                child: child!);
+          },
+        );
+
+        String formattedDate =
+            DateFormat('yyyy-MM-dd').format(pickedDate ?? DateTime.now());
+
+        widget.inputController.text = formattedDate;
+      },
     );
   }
 }
