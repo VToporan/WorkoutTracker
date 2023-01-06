@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'pages/exercises.dart';
 import 'pages/history.dart';
 import 'pages/authentication.dart';
+import 'storage/exercise_data_storage.dart';
 
 class ThemeColors {
   ThemeColors._();
@@ -112,6 +113,7 @@ class HomeState extends State<Home> {
     NavigationInfo(const History(), "History", Icons.history_sharp)
   ];
   int currentNavIndex = 0;
+  List<ExerciseData> exerciseData = extractDataFromPayload();
 
   @override
   Widget build(BuildContext context) {
@@ -132,5 +134,80 @@ class HomeState extends State<Home> {
             })),
       ),
     );
+  }
+
+  static List<ExerciseData> extractDataFromPayload() {
+    const data = [
+      {
+        'id': 1,
+        'name': 'Biceps Curls',
+        'logData': [
+          {
+            'id': 101,
+            'sets': 1.0,
+            'reps': 5.0,
+            'weight': 10.0,
+            'date': '01.01.2023',
+          },
+          {
+            'id': 102,
+            'sets': 1.0,
+            'reps': 7.0,
+            'weight': 15.0,
+            'date': '02.01.2023',
+          },
+          {
+            'id': 103,
+            'sets': 1.0,
+            'reps': 5.0,
+            'weight': 20.0,
+            'date': '03.01.2023',
+          },
+          {
+            'id': 104,
+            'sets': 2.0,
+            'reps': 5.0,
+            'weight': 15.0,
+            'date': '04.01.2023',
+          }
+        ],
+      },
+      {
+        'id': 2,
+        'name': 'Bench Press',
+        'logData': [
+          {
+            'id': 201,
+            'sets': 1.0,
+            'reps': 5.0,
+            'weight': 50.0,
+            'date': '01.01.2023',
+          },
+          {
+            'id': 202,
+            'sets': 1.0,
+            'reps': 7.0,
+            'weight': 55.0,
+            'date': '02.01.2023',
+          },
+          {
+            'id': 203,
+            'sets': 1.0,
+            'reps': 5.0,
+            'weight': 70.0,
+            'date': '03.01.2023',
+          },
+          {
+            'id': 204,
+            'sets': 2.0,
+            'reps': 5.0,
+            'weight': 55.0,
+            'date': '04.01.2023',
+          }
+        ],
+      },
+    ];
+
+    return data.map<ExerciseData>(ExerciseData.fromJson).toList();
   }
 }
