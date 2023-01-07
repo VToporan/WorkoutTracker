@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import 'pages/exercises.dart';
@@ -67,10 +69,12 @@ void main() {
           titleMedium:
               TextStyle(fontSize: 25, color: ThemeColors.foregroundAccent),
           titleSmall: TextStyle(fontSize: 15, color: ThemeColors.buttonAccent),
-          displayMedium:
-              TextStyle(fontSize: 25, color: ThemeColors.foregroundAccent),
           displayLarge:
               TextStyle(fontSize: 35, color: ThemeColors.errorDefault),
+          displayMedium:
+              TextStyle(fontSize: 25, color: ThemeColors.foregroundAccent),
+          displaySmall:
+              TextStyle(fontSize: 15, color: ThemeColors.foregroundDefault),
         ),
         textSelectionTheme: const TextSelectionThemeData(
             cursorColor: ThemeColors.foregroundAccent),
@@ -108,12 +112,14 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
+  int currentNavIndex = 0;
+  static List<ExerciseData> exerciseData =
+      extractDataFromPayload(getDataFromDB());
+
   static List<NavigationInfo> navInfo = [
     NavigationInfo(const Exercises(), "Exercises", Icons.fitness_center),
     NavigationInfo(const History(), "History", Icons.history_sharp)
   ];
-  int currentNavIndex = 0;
-  List<ExerciseData> exerciseData = extractDataFromPayload();
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +142,12 @@ class HomeState extends State<Home> {
     );
   }
 
-  static List<ExerciseData> extractDataFromPayload() {
+  static List<ExerciseData> extractDataFromPayload(
+      List<Map<String, Object>> data) {
+    return data.map<ExerciseData>(ExerciseData.fromJson).toList();
+  }
+
+  static List<Map<String, Object>> getDataFromDB() {
     const data = [
       {
         'id': 1,
@@ -208,6 +219,6 @@ class HomeState extends State<Home> {
       },
     ];
 
-    return data.map<ExerciseData>(ExerciseData.fromJson).toList();
+    return data;
   }
 }

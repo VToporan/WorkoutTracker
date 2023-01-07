@@ -1,74 +1,72 @@
+import 'package:GainsTrack/main.dart';
+import 'package:GainsTrack/storage/exercise_data_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 class History extends StatefulWidget {
-  // ignore: prefer_const_constructors_in_immutables
-  const History({Key? key}) : super(key: key);
+  const History({super.key});
 
   @override
   HistoryState createState() => HistoryState();
 }
 
 class HistoryState extends State<History> {
-  List<_SalesData> data = [
-    _SalesData('Jan', 35),
-    _SalesData('Feb', 28),
-    _SalesData('Mar', 34),
-    _SalesData('Apr', 32),
-    _SalesData('May', 40)
-  ];
+  List<ExerciseData> exerciseData = HomeState.exerciseData;
+  ExerciseData currentExercise = HomeState.exerciseData.elementAt(0);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Syncfusion Flutter chart'),
-        ),
-        body: Column(children: [
-          //Initialize the chart widget
-          SfCartesianChart(
-              primaryXAxis: CategoryAxis(),
-              // Chart title
-              title: ChartTitle(text: 'Half yearly sales analysis'),
-              // Enable legend
-              legend: Legend(isVisible: true),
-              // Enable tooltip
-              tooltipBehavior: TooltipBehavior(enable: true),
-              series: <ChartSeries<_SalesData, String>>[
-                LineSeries<_SalesData, String>(
-                    dataSource: data,
-                    xValueMapper: (_SalesData sales, _) => sales.year,
-                    yValueMapper: (_SalesData sales, _) => sales.sales,
-                    name: 'Sales',
-                    // Enable data label
-                    dataLabelSettings: DataLabelSettings(isVisible: true))
-              ]),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              //Initialize the spark charts widget
-              child: SfSparkLineChart.custom(
-                //Enable the trackball
-                trackball: SparkChartTrackball(
-                    activationMode: SparkChartActivationMode.tap),
-                //Enable marker
-                marker: SparkChartMarker(
-                    displayMode: SparkChartMarkerDisplayMode.all),
-                //Enable data label
-                labelDisplayMode: SparkChartLabelDisplayMode.all,
-                xValueMapper: (int index) => data[index].year,
-                yValueMapper: (int index) => data[index].sales,
-                dataCount: 5,
-              ),
+        body: ListView(children: [
+      DropdownButton(
+        value: currentExercise.id,
+        items: exerciseData
+            .map<DropdownMenuItem<int>>((exerciseRecord) => DropdownMenuItem(
+                  value: exerciseRecord.id,
+                  child: Text(exerciseRecord.exerciseName),
+                ))
+            .toList(),
+        onChanged: (value) {
+          setState(() {
+            currentExercise =
+                exerciseData.firstWhere((element) => element.id == value);
+          });
+        },
+      ),
+      SfCartesianChart(
+          borderWidth: 5,
+          primaryXAxis: CategoryAxis(),
+          legend: Legend(isVisible: true),
+          tooltipBehavior: TooltipBehavior(enable: true),
+          series: <ChartSeries<LogData, String>>[
+            SplineSeries<LogData, String>(
+              width: 5,
+              color: Theme.of(context).errorColor,
+              dataSource: currentExercise.logData,
+              xValueMapper: (LogData currentLog, _) =>
+                  DateFormat('dd.MM.yyyy').format(currentLog.date),
+              yValueMapper: (LogData currentLog, _) => currentLog.weight,
+              name: 'Weight',
             ),
-          )
-        ]));
+          ]),
+      SfCartesianChart(
+          borderWidth: 5,
+          primaryXAxis: CategoryAxis(),
+          legend: Legend(isVisible: true),
+          tooltipBehavior: TooltipBehavior(enable: true),
+          series: <ChartSeries<LogData, String>>[
+            SplineSeries<LogData, String>(
+              width: 5,
+              color: Theme.of(context).errorColor,
+              dataSource: currentExercise.logData,
+              xValueMapper: (LogData currentLog, _) =>
+                  DateFormat('dd.MM.yyyy').format(currentLog.date),
+              yValueMapper: (LogData currentLog, _) => currentLog.sets,
+              name: 'Sets',
+            ),
+          ]),
+    ]));
   }
-}
-
-class _SalesData {
-  _SalesData(this.year, this.sales);
-
-  final String year;
-  final double sales;
 }
