@@ -36,36 +36,36 @@ class HistoryState extends State<History> {
         },
       ),
       SfCartesianChart(
-          borderWidth: 5,
           primaryXAxis: CategoryAxis(),
-          legend: Legend(isVisible: true),
-          tooltipBehavior: TooltipBehavior(enable: true),
+          primaryYAxis: NumericAxis(),
+          axes: <ChartAxis>[
+            NumericAxis(
+              opposedPosition: true,
+              name: 'repsAxis',
+            )
+          ],
+          legend: Legend(
+            isVisible: true,
+          ),
+          tooltipBehavior: TooltipBehavior(
+            enable: true,
+          ),
           series: <ChartSeries<LogData, String>>[
-            SplineSeries<LogData, String>(
-              width: 5,
-              color: Theme.of(context).errorColor,
+            ColumnSeries<LogData, String>(
+              name: 'Weight',
               dataSource: currentExercise.logData,
               xValueMapper: (LogData currentLog, _) =>
                   DateFormat('dd.MM.yyyy').format(currentLog.date),
               yValueMapper: (LogData currentLog, _) => currentLog.weight,
-              name: 'Weight',
             ),
-          ]),
-      SfCartesianChart(
-          borderWidth: 5,
-          primaryXAxis: CategoryAxis(),
-          legend: Legend(isVisible: true),
-          tooltipBehavior: TooltipBehavior(enable: true),
-          series: <ChartSeries<LogData, String>>[
-            SplineSeries<LogData, String>(
-              width: 5,
-              color: Theme.of(context).errorColor,
-              dataSource: currentExercise.logData,
-              xValueMapper: (LogData currentLog, _) =>
-                  DateFormat('dd.MM.yyyy').format(currentLog.date),
-              yValueMapper: (LogData currentLog, _) => currentLog.sets,
-              name: 'Sets',
-            ),
+            ColumnSeries<LogData, String>(
+                name: 'Reps',
+                color: Theme.of(context).errorColor,
+                dataSource: currentExercise.logData,
+                xValueMapper: (LogData currentLog, _) =>
+                    DateFormat('dd.MM.yyyy').format(currentLog.date),
+                yValueMapper: (LogData currentLog, _) => currentLog.reps,
+                yAxisName: 'repsAxis'),
           ]),
     ]));
   }
