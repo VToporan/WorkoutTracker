@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import 'pages/exercises.dart';
 import 'pages/history.dart';
 import 'pages/authentication.dart';
+import 'storage/exercise_data_storage.dart';
 
 class ThemeColors {
   ThemeColors._();
@@ -66,10 +69,14 @@ void main() {
           titleMedium:
               TextStyle(fontSize: 25, color: ThemeColors.foregroundAccent),
           titleSmall: TextStyle(fontSize: 15, color: ThemeColors.buttonAccent),
-          displayMedium:
-              TextStyle(fontSize: 25, color: ThemeColors.foregroundAccent),
           displayLarge:
               TextStyle(fontSize: 35, color: ThemeColors.errorDefault),
+          displayMedium:
+              TextStyle(fontSize: 25, color: ThemeColors.foregroundAccent),
+          displaySmall:
+              TextStyle(fontSize: 15, color: ThemeColors.foregroundAccent),
+          bodySmall:
+              TextStyle(fontSize: 10, color: ThemeColors.foregroundAccent),
         ),
         textSelectionTheme: const TextSelectionThemeData(
             cursorColor: ThemeColors.foregroundAccent),
@@ -107,11 +114,14 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
+  int currentNavIndex = 0;
+  static List<ExerciseData> exerciseData =
+      extractDataFromPayload(getDataFromDB());
+
   static List<NavigationInfo> navInfo = [
     NavigationInfo(const Exercises(), "Exercises", Icons.fitness_center),
     NavigationInfo(const History(), "History", Icons.history_sharp)
   ];
-  int currentNavIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -132,5 +142,93 @@ class HomeState extends State<Home> {
             })),
       ),
     );
+  }
+
+  static List<ExerciseData> extractDataFromPayload(
+      List<Map<String, Object>> data) {
+    return data.map<ExerciseData>(ExerciseData.fromJson).toList();
+  }
+
+  static List<Map<String, Object>> getDataFromDB() {
+    const data = [
+      {
+        'id': 1,
+        'name': 'Biceps Curls',
+        'logData': [
+          {
+            'id': 101,
+            'sets': 1.0,
+            'reps': 5.0,
+            'weight': 10.0,
+            'note': 'note 11',
+            'date': '01.01.2023',
+          },
+          {
+            'id': 102,
+            'sets': 1.0,
+            'reps': 7.0,
+            'weight': 15.0,
+            'note': 'note 12',
+            'date': '02.01.2023',
+          },
+          {
+            'id': 103,
+            'sets': 1.0,
+            'reps': 5.0,
+            'weight': 20.0,
+            'note': 'note 13',
+            'date': '03.01.2023',
+          },
+          {
+            'id': 104,
+            'sets': 2.0,
+            'reps': 5.0,
+            'weight': 15.0,
+            'note': 'note 14',
+            'date': '04.01.2023',
+          }
+        ],
+      },
+      {
+        'id': 2,
+        'name': 'Bench Press',
+        'logData': [
+          {
+            'id': 201,
+            'sets': 1.0,
+            'reps': 5.0,
+            'weight': 50.0,
+            'note': 'note 21',
+            'date': '01.01.2023',
+          },
+          {
+            'id': 202,
+            'sets': 1.0,
+            'reps': 7.0,
+            'weight': 55.0,
+            'note': 'note 22',
+            'date': '02.01.2023',
+          },
+          {
+            'id': 203,
+            'sets': 1.0,
+            'reps': 5.0,
+            'weight': 70.0,
+            'note': 'note 23',
+            'date': '03.01.2023',
+          },
+          {
+            'id': 204,
+            'sets': 2.0,
+            'reps': 5.0,
+            'weight': 55.0,
+            'note': 'note 24',
+            'date': '04.01.2023',
+          }
+        ],
+      },
+    ];
+
+    return data;
   }
 }
