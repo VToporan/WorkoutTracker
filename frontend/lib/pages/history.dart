@@ -51,6 +51,8 @@ class HistoryState extends State<History> {
               cardList = mapLogsToCards(currentExercise);
             });
           },
+          dropdownColor: ThemeColors.buttonDefault,
+          focusColor: ThemeColors.backgroundDefault,
         ),
         const Divider(
           height: 20,
