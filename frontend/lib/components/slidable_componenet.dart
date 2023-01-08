@@ -33,7 +33,11 @@ class SlidableComponent extends StatelessWidget {
           ),
         ],
       ),
-      child: CardComponent(id: 0, title: cardTitle, subTitle: cardSubtitle),
+      child: CardComponent(
+        title: cardTitle,
+        subTitle: cardSubtitle,
+        onTap: onTap,
+      ),
     );
   }
 }
