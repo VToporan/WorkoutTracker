@@ -28,7 +28,6 @@ class HistoryState extends State<History> {
   void initState() {
     exerciseData = HomeState.exerciseData;
     currentExercise = exerciseData.elementAt(0);
-    cardList = mapLogsToCards(currentExercise);
     super.initState();
   }
 
@@ -48,7 +47,6 @@ class HistoryState extends State<History> {
             setState(() {
               currentExercise =
                   exerciseData.firstWhere((element) => element.id == value);
-              cardList = mapLogsToCards(currentExercise);
             });
           },
           dropdownColor: ThemeColors.buttonDefault,
@@ -98,19 +96,7 @@ class HistoryState extends State<History> {
             ),
           ],
         ),
-        Column(
-          children: cardList,
-        ),
       ]),
     );
-  }
-
-  List<Widget> mapLogsToCards(ExerciseData currentExercise) {
-    return currentExercise.logData
-        .map((log) => CardComponent(
-            id: log.id,
-            title: DateFormat('dd-MMM-yy').format(log.date),
-            subTitle: log.note))
-        .toList();
   }
 }
