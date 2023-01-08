@@ -160,6 +160,7 @@ class HomeState extends State<Home> {
             'sets': 1.0,
             'reps': 5.0,
             'weight': 10.0,
+            'note': 'note 11',
             'date': '01.01.2023',
           },
           {
@@ -167,6 +168,7 @@ class HomeState extends State<Home> {
             'sets': 1.0,
             'reps': 7.0,
             'weight': 15.0,
+            'note': 'note 12',
             'date': '02.01.2023',
           },
           {
@@ -174,6 +176,7 @@ class HomeState extends State<Home> {
             'sets': 1.0,
             'reps': 5.0,
             'weight': 20.0,
+            'note': 'note 13',
             'date': '03.01.2023',
           },
           {
@@ -181,6 +184,7 @@ class HomeState extends State<Home> {
             'sets': 2.0,
             'reps': 5.0,
             'weight': 15.0,
+            'note': 'note 14',
             'date': '04.01.2023',
           }
         ],
@@ -194,6 +198,7 @@ class HomeState extends State<Home> {
             'sets': 1.0,
             'reps': 5.0,
             'weight': 50.0,
+            'note': 'note 21',
             'date': '01.01.2023',
           },
           {
@@ -201,6 +206,7 @@ class HomeState extends State<Home> {
             'sets': 1.0,
             'reps': 7.0,
             'weight': 55.0,
+            'note': 'note 22',
             'date': '02.01.2023',
           },
           {
@@ -208,6 +214,7 @@ class HomeState extends State<Home> {
             'sets': 1.0,
             'reps': 5.0,
             'weight': 70.0,
+            'note': 'note 23',
             'date': '03.01.2023',
           },
           {
@@ -215,6 +222,7 @@ class HomeState extends State<Home> {
             'sets': 2.0,
             'reps': 5.0,
             'weight': 55.0,
+            'note': 'note 24',
             'date': '04.01.2023',
           }
         ],

@@ -22,6 +22,7 @@ class LogData {
   final double reps;
   final double sets;
   final double weight;
+  final String note;
   final DateTime date;
 
   LogData({
@@ -29,6 +30,7 @@ class LogData {
     required this.sets,
     required this.reps,
     required this.weight,
+    required this.note,
     required this.date,
   });
 
@@ -37,6 +39,7 @@ class LogData {
         sets: json['sets'],
         reps: json['reps'],
         weight: json['weight'],
+        note: json['note'],
         date: DateFormat('dd.MM.yyyy').parse(json['date']),
       );
 }
