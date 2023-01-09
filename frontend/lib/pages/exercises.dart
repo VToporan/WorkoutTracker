@@ -42,7 +42,7 @@ class ExercisesState extends State<Exercises> {
                 onTap: (() => showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return ModalComponent(id: currentExercise.id);
+                      return Container();
                     })),
                 onDelete: ((context) {
                   setState(() {

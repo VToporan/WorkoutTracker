@@ -181,7 +181,7 @@ class HistoryState extends State<History> {
                     onTap: (() => showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return ModalComponent(id: currentLog.id);
+                          return Container();
                         })),
                     onDelete: ((context) {
                       setState(() {

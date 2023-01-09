@@ -6,41 +6,19 @@ import 'error_component.dart';
 import 'input_components.dart';
 
 class ModalComponent extends StatefulWidget {
-  final int id;
-  const ModalComponent({super.key, required this.id});
+  final List<InputComponent> inputs;
+  final Function() submitFunction;
+  const ModalComponent({
+    super.key,
+    required this.inputs,
+    required this.submitFunction,
+  });
 
   @override
   State<ModalComponent> createState() => ModalComponentState();
 }
 
 class ModalComponentState extends State<ModalComponent> {
-  NumberInputComponent setsInput = NumberInputComponent(
-    key: GlobalKey<InputComponentState>(),
-    inputController: TextEditingController(),
-    labelText: "Sets",
-  );
-
-  NumberInputComponent repsInput = NumberInputComponent(
-    key: GlobalKey<InputComponentState>(),
-    inputController: TextEditingController(),
-    labelText: "Reps",
-  );
-  NumberInputComponent weightInput = NumberInputComponent(
-    key: GlobalKey<InputComponentState>(),
-    inputController: TextEditingController(),
-    labelText: "Weight",
-  );
-  LongInputComponent notesInput = LongInputComponent(
-    key: GlobalKey<InputComponentState>(),
-    inputController: TextEditingController(),
-    labelText: "Notes",
-  );
-
-  DateInputComponent dateInput = DateInputComponent(
-      key: GlobalKey<InputComponentState>(),
-      inputController: TextEditingController(),
-      labelText: "Date");
-
   late List<InputComponent> inputs;
   bool isError = false;
   String errorMessage = "";
@@ -48,13 +26,7 @@ class ModalComponentState extends State<ModalComponent> {
   @override
   void initState() {
     super.initState();
-    inputs = [
-      setsInput,
-      repsInput,
-      weightInput,
-      dateInput,
-      notesInput,
-    ];
+    inputs = widget.inputs;
   }
 
   @override
@@ -106,7 +78,7 @@ class ModalComponentState extends State<ModalComponent> {
 
   void verifyInputsNotEmpty() {
     for (InputComponent input in inputs) {
-      if (input != notesInput) {
+      if (input is! NumberInputComponent) {
         if (input.key.currentState!.isEmpty()) {
           isError = true;
         }
