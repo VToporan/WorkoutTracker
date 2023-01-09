@@ -6,10 +6,10 @@ class SlidableComponent extends StatelessWidget {
   final String cardTitle;
   final String cardSubtitle;
   final Function() onTap;
-  final Function() onDelete;
+  final Function(BuildContext) onDelete;
 
   const SlidableComponent({
-    super.key,
+    required key,
     required this.cardTitle,
     required this.cardSubtitle,
     required this.onTap,
@@ -19,13 +19,14 @@ class SlidableComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Slidable(
+      key: key,
       startActionPane: ActionPane(
         motion: const BehindMotion(),
         extentRatio: 0.25,
         openThreshold: 0.15,
         children: [
           SlidableAction(
-            onPressed: onDelete(),
+            onPressed: onDelete,
             backgroundColor: Theme.of(context).errorColor,
             foregroundColor: Theme.of(context).primaryColor,
             icon: Icons.delete,

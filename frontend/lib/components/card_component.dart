@@ -16,7 +16,7 @@ class CardComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap(),
+      onTap: onTap,
       child: Card(
         child: Column(
           mainAxisSize: MainAxisSize.min,
