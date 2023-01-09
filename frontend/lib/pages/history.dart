@@ -9,9 +9,9 @@ import '../components/modal_component.dart';
 import '../components/slidable_componenet.dart';
 
 class ChartColors {
-  static const Color weightColor = Color(0xFFB02060);
-  static const Color repsColor = Color(0xFFB020A0);
-  static const Color setsColor = Color(0xFFB020D0);
+  static const Color weightColor = Color(0xFFC00060);
+  static const Color repsColor = Color(0xFFC000A0);
+  static const Color setsColor = Color(0xFFC000D0);
 }
 
 class History extends StatefulWidget {
@@ -66,7 +66,7 @@ class HistoryState extends State<History> {
           ),
           primaryXAxis: CategoryAxis(
             labelStyle: Theme.of(context).textTheme.bodySmall,
-            labelRotation: 45,
+            labelRotation: 30,
             majorGridLines: const MajorGridLines(
               width: 1,
               color: ThemeColors.buttonAccent,
