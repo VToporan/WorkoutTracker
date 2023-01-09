@@ -1,6 +1,12 @@
 import 'dart:convert';
+import 'package:GainsTrack/components/modal_component.dart';
+import 'package:GainsTrack/components/slidable_componenet.dart';
+import 'package:GainsTrack/main.dart';
+import 'package:GainsTrack/storage/exercise_data_storage.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter/material.dart';
+import 'package:jiffy/jiffy.dart';
 
 import '../components/card_component.dart';
 
@@ -12,49 +18,53 @@ class Exercises extends StatefulWidget {
 }
 
 class ExercisesState extends State<Exercises> {
-  List<CardComponent> cards = extractFromPayload();
+  late List<ExerciseData> exerciseData;
+
+  @override
+  void initState() {
+    super.initState();
+
+    exerciseData = HomeState.exerciseData;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SlidableAutoCloseBehavior(
-        child: ListView.builder(
-            reverse: true,
-            itemCount: cards.length,
-            itemBuilder: (BuildContext context, int index) {
-              var currentCard = cards[index];
-              return Slidable(
-                  key: ValueKey(currentCard.id),
-                  groupTag: "0",
-                  startActionPane: ActionPane(
-                    motion: const BehindMotion(),
-                    extentRatio: 0.25,
-                    openThreshold: 0.15,
-                    children: [
-                      SlidableAction(
-                        onPressed: (context) {
-                          setState(() {
-                            cards.remove(currentCard);
-                          });
-                        },
-                        backgroundColor: Theme.of(context).errorColor,
-                        foregroundColor: Theme.of(context).primaryColor,
-                        icon: Icons.delete,
-                        label: 'Delete',
-                      ),
-                    ],
-                  ),
-                  child: currentCard);
-            }),
-      ),
+          child: ListView(
+        reverse: true,
+        children: exerciseData
+            .map(
+              (currentExercise) => SlidableComponent(
+                key: ValueKey(currentExercise.id),
+                cardTitle: currentExercise.exerciseName,
+                cardSubtitle: computeTime(currentExercise),
+                onTap: (() => showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return ModalComponent(id: currentExercise.id);
+                    })),
+                onDelete: ((context) {
+                  setState(() {
+                    exerciseData.remove(currentExercise);
+                  });
+                }),
+              ),
+            )
+            .toList(),
+      )),
     );
   }
 
-  static List<CardComponent> extractFromPayload() {
-    const data = [
-      {"title": "Bench press", "subtitle": "Last edited: 3 days ago", "id": 1},
-      {"title": "Biceps curls", "subtitle": "Last edited: 4 weeks ago", "id": 2}
-    ];
-    return data.map<CardComponent>(CardComponent.fromJson).toList();
+  String computeTime(ExerciseData currentExercise) {
+    DateTime logDate = lastLogDate(currentExercise);
+    return "Last workout ${Jiffy(logDate).fromNow()}";
+  }
+
+  DateTime lastLogDate(ExerciseData currentExercise) {
+    return currentExercise.logData
+        .reduce((value, element) =>
+            value.date.compareTo(element.date) > 0 ? value : element)
+        .date;
   }
 }

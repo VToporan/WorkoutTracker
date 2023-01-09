@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
+import 'package:jiffy/jiffy.dart';
 
 class InputComponent extends StatefulWidget {
   final TextEditingController inputController;
@@ -149,8 +149,7 @@ class DateInputComponentState extends InputComponentState {
   @override
   void initState() {
     super.initState();
-    widget.inputController.text =
-        DateFormat('dd.MM.yyyy').format(DateTime.now());
+    widget.inputController.text = formatDate(DateTime.now());
   }
 
   @override
@@ -171,11 +170,14 @@ class DateInputComponentState extends InputComponentState {
           lastDate: DateTime(2100),
         );
 
-        String formattedDate =
-            DateFormat('yyyy-MM-dd').format(pickedDate ?? DateTime.now());
+        String formattedDate = formatDate(pickedDate ?? DateTime.now());
 
         widget.inputController.text = formattedDate;
       },
     );
+  }
+
+  String formatDate(DateTime date) {
+    return Jiffy(date).format('yyyy-MM-dd');
   }
 }

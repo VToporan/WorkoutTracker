@@ -27,6 +27,7 @@ void main() {
       title: "Workout Tracker",
       theme: ThemeData(
         primaryColor: ThemeColors.foregroundAccent,
+        backgroundColor: ThemeColors.backgroundDefault,
         scaffoldBackgroundColor: ThemeColors.backgroundDefault,
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
             backgroundColor: ThemeColors.backgroundAccent,

@@ -2,32 +2,21 @@ import 'package:GainsTrack/components/modal_component.dart';
 import 'package:flutter/material.dart';
 
 class CardComponent extends StatelessWidget {
-  final int id;
   final String title;
   final String subTitle;
+  final Function() onTap;
+
   const CardComponent({
     super.key,
-    required this.id,
     required this.title,
     required this.subTitle,
+    required this.onTap,
   });
-
-  static CardComponent fromJson(json) => CardComponent(
-        id: json['id'],
-        title: json['title'],
-        subTitle: json['subtitle'],
-      );
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return ModalComponent(id: id);
-            });
-      },
+      onTap: onTap,
       child: Card(
         child: Column(
           mainAxisSize: MainAxisSize.min,

@@ -1,11 +1,12 @@
-import 'package:GainsTrack/components/card_component.dart';
 import 'package:GainsTrack/main.dart';
 import 'package:GainsTrack/storage/exercise_data_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:intl/intl.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
+
+import '../components/modal_component.dart';
+import '../components/slidable_componenet.dart';
 
 class ChartColors {
   static const Color weightColor = Color(0xFFC02080);
@@ -22,13 +23,11 @@ class History extends StatefulWidget {
 class HistoryState extends State<History> {
   late List<ExerciseData> exerciseData;
   late ExerciseData currentExercise;
-  late List<Widget> cardList;
 
   @override
   void initState() {
     exerciseData = HomeState.exerciseData;
     currentExercise = exerciseData.elementAt(0);
-    cardList = mapLogsToCards(currentExercise);
     super.initState();
   }
 
@@ -48,9 +47,10 @@ class HistoryState extends State<History> {
             setState(() {
               currentExercise =
                   exerciseData.firstWhere((element) => element.id == value);
-              cardList = mapLogsToCards(currentExercise);
             });
           },
+          dropdownColor: ThemeColors.buttonDefault,
+          focusColor: ThemeColors.backgroundDefault,
         ),
         const Divider(
           height: 20,
@@ -64,7 +64,7 @@ class HistoryState extends State<History> {
           ),
           primaryXAxis: CategoryAxis(
             labelStyle: Theme.of(context).textTheme.bodySmall,
-            labelRotation: 90,
+            labelRotation: 45,
           ),
           primaryYAxis: NumericAxis(),
           axes: <ChartAxis>[
@@ -82,7 +82,7 @@ class HistoryState extends State<History> {
               color: ChartColors.weightColor,
               dataSource: currentExercise.logData,
               xValueMapper: (LogData currentLog, _) =>
-                  DateFormat('dd-MMM-yy').format(currentLog.date),
+                  formatDate(currentLog.date),
               yValueMapper: (LogData currentLog, _) => currentLog.weight,
             ),
             ColumnSeries<LogData, String>(
@@ -90,25 +90,40 @@ class HistoryState extends State<History> {
               color: ChartColors.repsColor,
               dataSource: currentExercise.logData,
               xValueMapper: (LogData currentLog, _) =>
-                  DateFormat('dd-MMM-yy').format(currentLog.date),
+                  formatDate(currentLog.date),
               yValueMapper: (LogData currentLog, _) => currentLog.reps,
               yAxisName: 'repsAxis',
             ),
           ],
         ),
-        Column(
-          children: cardList,
+        SlidableAutoCloseBehavior(
+          child: Column(
+            children: currentExercise.logData
+                .map(
+                  (currentLog) => SlidableComponent(
+                    key: ValueKey(currentLog.id),
+                    cardTitle: Jiffy(currentLog.date).format('MMMM do yyyy'),
+                    cardSubtitle: currentLog.note,
+                    onTap: (() => showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return ModalComponent(id: currentLog.id);
+                        })),
+                    onDelete: ((context) {
+                      setState(() {
+                        currentExercise.logData.remove(currentLog);
+                      });
+                    }),
+                  ),
+                )
+                .toList(),
+          ),
         ),
       ]),
     );
   }
 
-  List<Widget> mapLogsToCards(ExerciseData currentExercise) {
-    return currentExercise.logData
-        .map((log) => CardComponent(
-            id: log.id,
-            title: DateFormat('dd-MMM-yy').format(log.date),
-            subTitle: log.note))
-        .toList();
+  String formatDate(DateTime date) {
+    return Jiffy(date).format('dd.MMM.yy');
   }
 }
