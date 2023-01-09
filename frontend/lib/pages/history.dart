@@ -7,6 +7,9 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
+import '../components/modal_component.dart';
+import '../components/slidable_componenet.dart';
+
 class ChartColors {
   static const Color weightColor = Color(0xFFC02080);
   static const Color repsColor = Color(0xFF8020C0);
@@ -22,7 +25,6 @@ class History extends StatefulWidget {
 class HistoryState extends State<History> {
   late List<ExerciseData> exerciseData;
   late ExerciseData currentExercise;
-  late List<Widget> cardList;
 
   @override
   void initState() {
@@ -95,6 +97,29 @@ class HistoryState extends State<History> {
               yAxisName: 'repsAxis',
             ),
           ],
+        ),
+        SlidableAutoCloseBehavior(
+          child: Column(
+            children: currentExercise.logData
+                .map(
+                  (currentLog) => SlidableComponent(
+                    key: ValueKey(currentLog.id),
+                    cardTitle: currentLog.sets.toString(),
+                    cardSubtitle: currentLog.note,
+                    onTap: (() => showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return ModalComponent(id: currentLog.id);
+                        })),
+                    onDelete: ((context) {
+                      setState(() {
+                        currentExercise.logData.remove(currentLog);
+                      });
+                    }),
+                  ),
+                )
+                .toList(),
+          ),
         ),
       ]),
     );
