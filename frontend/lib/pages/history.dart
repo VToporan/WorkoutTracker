@@ -1,11 +1,9 @@
-import 'package:GainsTrack/components/card_component.dart';
 import 'package:GainsTrack/main.dart';
 import 'package:GainsTrack/storage/exercise_data_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:intl/intl.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 import '../components/modal_component.dart';
 import '../components/slidable_componenet.dart';
@@ -66,7 +64,7 @@ class HistoryState extends State<History> {
           ),
           primaryXAxis: CategoryAxis(
             labelStyle: Theme.of(context).textTheme.bodySmall,
-            labelRotation: 90,
+            labelRotation: 45,
           ),
           primaryYAxis: NumericAxis(),
           axes: <ChartAxis>[
@@ -84,7 +82,7 @@ class HistoryState extends State<History> {
               color: ChartColors.weightColor,
               dataSource: currentExercise.logData,
               xValueMapper: (LogData currentLog, _) =>
-                  DateFormat('dd-MMM-yy').format(currentLog.date),
+                  formatDate(currentLog.date),
               yValueMapper: (LogData currentLog, _) => currentLog.weight,
             ),
             ColumnSeries<LogData, String>(
@@ -92,7 +90,7 @@ class HistoryState extends State<History> {
               color: ChartColors.repsColor,
               dataSource: currentExercise.logData,
               xValueMapper: (LogData currentLog, _) =>
-                  DateFormat('dd-MMM-yy').format(currentLog.date),
+                  formatDate(currentLog.date),
               yValueMapper: (LogData currentLog, _) => currentLog.reps,
               yAxisName: 'repsAxis',
             ),
@@ -104,7 +102,7 @@ class HistoryState extends State<History> {
                 .map(
                   (currentLog) => SlidableComponent(
                     key: ValueKey(currentLog.id),
-                    cardTitle: currentLog.sets.toString(),
+                    cardTitle: Jiffy(currentLog.date).format('MMMM do yyyy'),
                     cardSubtitle: currentLog.note,
                     onTap: (() => showDialog(
                         context: context,
@@ -123,5 +121,9 @@ class HistoryState extends State<History> {
         ),
       ]),
     );
+  }
+
+  String formatDate(DateTime date) {
+    return Jiffy(date).format('dd.MMM.yy');
   }
 }
