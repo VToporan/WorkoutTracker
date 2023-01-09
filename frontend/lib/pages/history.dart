@@ -9,8 +9,9 @@ import '../components/modal_component.dart';
 import '../components/slidable_componenet.dart';
 
 class ChartColors {
-  static const Color weightColor = Color(0xFFC02080);
-  static const Color repsColor = Color(0xFF8020C0);
+  static const Color weightColor = Color(0xFFB02060);
+  static const Color repsColor = Color(0xFFB020A0);
+  static const Color setsColor = Color(0xFFB020D0);
 }
 
 class History extends StatefulWidget {
@@ -56,6 +57,7 @@ class HistoryState extends State<History> {
           height: 20,
         ),
         SfCartesianChart(
+          plotAreaBorderColor: ThemeColors.backgroundDefault,
           legend: Legend(
             isVisible: true,
             isResponsive: true,
@@ -65,12 +67,75 @@ class HistoryState extends State<History> {
           primaryXAxis: CategoryAxis(
             labelStyle: Theme.of(context).textTheme.bodySmall,
             labelRotation: 45,
+            majorGridLines: const MajorGridLines(
+              width: 1,
+              color: ThemeColors.buttonAccent,
+            ),
+            majorTickLines: const MajorTickLines(
+              width: 0,
+            ),
           ),
-          primaryYAxis: NumericAxis(),
+          primaryYAxis: NumericAxis(
+            axisLine: const AxisLine(
+              width: 2,
+              color: ChartColors.weightColor,
+            ),
+            labelStyle: const TextStyle(
+              fontSize: 15,
+              color: ChartColors.weightColor,
+            ),
+            majorGridLines: const MajorGridLines(
+              width: 1,
+              color: ThemeColors.foregroundAccent,
+              dashArray: <double>[1, 1],
+            ),
+            majorTickLines: const MajorTickLines(
+              width: 2,
+              color: ChartColors.weightColor,
+            ),
+          ),
           axes: <ChartAxis>[
             NumericAxis(
               opposedPosition: true,
               name: 'repsAxis',
+              labelStyle: const TextStyle(
+                fontSize: 15,
+                color: ChartColors.repsColor,
+              ),
+              axisLine: const AxisLine(
+                width: 2,
+                color: ChartColors.repsColor,
+              ),
+              majorGridLines: const MajorGridLines(
+                width: 2,
+                color: ThemeColors.foregroundAccent,
+                dashArray: <double>[3, 3],
+              ),
+              majorTickLines: const MajorTickLines(
+                width: 2,
+                color: ChartColors.repsColor,
+              ),
+            ),
+            NumericAxis(
+              opposedPosition: true,
+              name: 'setsAxis',
+              labelStyle: const TextStyle(
+                fontSize: 15,
+                color: ChartColors.setsColor,
+              ),
+              axisLine: const AxisLine(
+                width: 2,
+                color: ChartColors.setsColor,
+              ),
+              majorGridLines: const MajorGridLines(
+                width: 1,
+                color: ThemeColors.foregroundAccent,
+                dashArray: <double>[5, 5],
+              ),
+              majorTickLines: const MajorTickLines(
+                width: 2,
+                color: ChartColors.setsColor,
+              ),
             ),
           ],
           tooltipBehavior: TooltipBehavior(
@@ -94,6 +159,15 @@ class HistoryState extends State<History> {
               yValueMapper: (LogData currentLog, _) => currentLog.reps,
               yAxisName: 'repsAxis',
             ),
+            ColumnSeries<LogData, String>(
+              name: 'Sets',
+              color: ChartColors.setsColor,
+              dataSource: currentExercise.logData,
+              xValueMapper: (LogData currentLog, _) =>
+                  formatDate(currentLog.date),
+              yValueMapper: (LogData currentLog, _) => currentLog.sets,
+              yAxisName: 'setsAxis',
+            ),
           ],
         ),
         SlidableAutoCloseBehavior(
@@ -102,8 +176,8 @@ class HistoryState extends State<History> {
                 .map(
                   (currentLog) => SlidableComponent(
                     key: ValueKey(currentLog.id),
-                    cardTitle: Jiffy(currentLog.date).format('MMMM do yyyy'),
-                    cardSubtitle: currentLog.note,
+                    cardTitle: currentLog.note,
+                    cardSubtitle: Jiffy(currentLog.date).format('MMMM do yyyy'),
                     onTap: (() => showDialog(
                         context: context,
                         builder: (BuildContext context) {

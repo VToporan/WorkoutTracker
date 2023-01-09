@@ -77,7 +77,7 @@ void main() {
           displaySmall:
               TextStyle(fontSize: 15, color: ThemeColors.foregroundAccent),
           bodySmall:
-              TextStyle(fontSize: 10, color: ThemeColors.foregroundAccent),
+              TextStyle(fontSize: 13, color: ThemeColors.foregroundAccent),
         ),
         textSelectionTheme: const TextSelectionThemeData(
             cursorColor: ThemeColors.foregroundAccent),
