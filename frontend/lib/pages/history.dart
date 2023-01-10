@@ -1,18 +1,9 @@
 import 'package:GainsTrack/main.dart';
 import 'package:GainsTrack/storage/exercise_data_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:jiffy/jiffy.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
-import '../components/modal_component.dart';
-import '../components/slidable_componenet.dart';
-
-class ChartColors {
-  static const Color weightColor = Color(0xFFC00060);
-  static const Color repsColor = Color(0xFFC000A0);
-  static const Color setsColor = Color(0xFFC000D0);
-}
+import '../components/chart_component.dart';
+import '../components/notes_component.dart';
 
 class History extends StatefulWidget {
   const History({super.key});
@@ -57,34 +48,10 @@ class HistoryState extends State<History> {
           height: 20,
         ),
         ChartComponent(currentExercise: currentExercise),
-        SlidableAutoCloseBehavior(
-          child: Column(
-            children: currentExercise.logData
-                .map(
-                  (currentLog) => SlidableComponent(
-                    key: ValueKey(currentLog.id),
-                    cardTitle: currentLog.note,
-                    cardSubtitle: Jiffy(currentLog.date).format('MMMM do yyyy'),
-                    onTap: (() => showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return Container();
-                        })),
-                    onDelete: ((context) {
-                      setState(() {
-                        currentExercise.logData.remove(currentLog);
-                      });
-                    }),
-                  ),
-                )
-                .toList(),
-          ),
-        ),
+        NotesComponent(currentExercise: currentExercise),
       ]),
     );
   }
 
-  String formatDate(DateTime date) {
-    return Jiffy(date).format('dd.MMM.yy');
   }
 }

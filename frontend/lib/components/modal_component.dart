@@ -7,11 +7,11 @@ import 'input_components.dart';
 
 class ModalComponent extends StatefulWidget {
   final List<InputComponent> inputs;
-  final Function() submitFunction;
+  final Function() onSubmit;
   const ModalComponent({
     super.key,
     required this.inputs,
-    required this.submitFunction,
+    required this.onSubmit,
   });
 
   @override
@@ -56,7 +56,7 @@ class ModalComponentState extends State<ModalComponent> {
                   )),
                   Expanded(
                       child: ButtonComponent(
-                    buttonFunction: submitData,
+                    buttonFunction: widget.onSubmit,
                     buttonText: "Confirm",
                   )),
                 ],
