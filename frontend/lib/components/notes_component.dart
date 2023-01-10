@@ -18,6 +18,7 @@ class NotesComponent extends StatefulWidget {
 class _NotesComponentState extends State<NotesComponent> {
   @override
   Widget build(BuildContext context) {
+    widget.currentExercise.logData.sort((b, a) => a.date.compareTo(b.date));
     return SlidableAutoCloseBehavior(
       child: Column(
         children: widget.currentExercise.logData

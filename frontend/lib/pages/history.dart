@@ -52,6 +52,4 @@ class HistoryState extends State<History> {
       ]),
     );
   }
-
-  }
 }
