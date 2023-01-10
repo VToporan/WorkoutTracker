@@ -149,7 +149,9 @@ class DateInputComponentState extends InputComponentState {
   @override
   void initState() {
     super.initState();
-    widget.inputController.text = formatDate(DateTime.now());
+    if (widget.inputController.text.isEmpty) {
+      widget.inputController.text = formatDate(DateTime.now());
+    }
   }
 
   @override

@@ -6,10 +6,14 @@ import 'error_component.dart';
 import 'input_components.dart';
 
 class ModalComponent extends StatefulWidget {
+  final String title;
   final List<InputComponent> inputs;
   final Function() onSubmit;
+  final GlobalKey key;
+
   const ModalComponent({
-    super.key,
+    required this.key,
+    required this.title,
     required this.inputs,
     required this.onSubmit,
   });
@@ -19,16 +23,15 @@ class ModalComponent extends StatefulWidget {
 }
 
 class ModalComponentState extends State<ModalComponent> {
-  late List<InputComponent> inputs;
-  bool isError = false;
-  String errorMessage = "";
+  // late List<InputComponent> inputs;
 
   @override
   void initState() {
     super.initState();
-    inputs = widget.inputs;
+    // inputs = widget.inputs;
   }
 
+  late String errorMessage = "";
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -37,9 +40,16 @@ class ModalComponentState extends State<ModalComponent> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+              child: Text(
+                widget.title,
+                style: Theme.of(context).textTheme.displayLarge,
+              ),
+            ),
+            Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25),
               child: Column(
-                children: inputs,
+                children: widget.inputs,
               ),
             ),
             ErrorComponent(message: errorMessage),
@@ -66,36 +76,9 @@ class ModalComponentState extends State<ModalComponent> {
     );
   }
 
-  void submitData() {
-    resetError();
-    verifyInputsNotEmpty();
-    if (isError) {
-      setState(() {
-        errorMessage = "Invalid inputs";
-      });
-    }
-  }
-
-  void verifyInputsNotEmpty() {
-    for (InputComponent input in inputs) {
-      if (input is! NumberInputComponent) {
-        if (input.key.currentState!.isEmpty()) {
-          isError = true;
-        }
-      }
-    }
-  }
-
-  void resetError() {
+  setErrorMessage(message) {
     setState(() {
-      isError = false;
-      errorMessage = "";
+      errorMessage = message;
     });
-  }
-
-  void clearControllers() {
-    for (InputComponent input in inputs) {
-      input.inputController.clear();
-    }
   }
 }
