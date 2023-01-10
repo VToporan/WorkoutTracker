@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
 
 import '../components/card_component.dart';
+import '../components/input_components.dart';
 
 class Exercises extends StatefulWidget {
   const Exercises({super.key});
@@ -19,6 +20,17 @@ class Exercises extends StatefulWidget {
 
 class ExercisesState extends State<Exercises> {
   late List<ExerciseData> exerciseData;
+
+  late NumberInputComponent setsInput;
+  late NumberInputComponent repsInput;
+  late NumberInputComponent weightInput;
+  late LongInputComponent notesInput;
+  late DateInputComponent dateInput;
+
+  late List<InputComponent> inputs;
+
+  bool isError = false;
+  GlobalKey<ModalComponentState> modalKey = GlobalKey();
 
   @override
   void initState() {
@@ -31,28 +43,52 @@ class ExercisesState extends State<Exercises> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SlidableAutoCloseBehavior(
-          child: ListView(
-        reverse: true,
-        children: exerciseData
-            .map(
-              (currentExercise) => SlidableComponent(
-                key: ValueKey(currentExercise.id),
-                cardTitle: currentExercise.exerciseName,
-                cardSubtitle: computeTime(currentExercise),
-                onTap: (() => showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Container();
-                    })),
-                onDelete: ((context) {
-                  setState(() {
-                    exerciseData.remove(currentExercise);
-                  });
-                }),
-              ),
-            )
-            .toList(),
-      )),
+        child: ListView(
+          reverse: true,
+          children: [
+            Column(
+              children: exerciseData
+                  .map(
+                    (currentExercise) => SlidableComponent(
+                      key: ValueKey(currentExercise.id),
+                      cardTitle: currentExercise.exerciseName,
+                      cardSubtitle: computeTime(currentExercise),
+                      onTap: (() => showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            setAllControllers();
+                            return ModalComponent(
+                                key: modalKey,
+                                title:
+                                    'Add log for - ${currentExercise.exerciseName}',
+                                inputs: inputs,
+                                onSubmit: () {
+                                  resetError();
+                                  verifyInputsNotEmpty();
+                                  if (isError) {
+                                    modalKey.currentState!
+                                        .setErrorMessage("Invalid Inputs");
+                                  }
+                                  print(currentExercise.exerciseName);
+                                });
+                          })),
+                      onDelete: ((context) {
+                        setState(() {
+                          exerciseData.remove(currentExercise);
+                        });
+                      }),
+                    ),
+                  )
+                  .toList(),
+            ),
+            CardComponent(
+              title: 'Add new exercise',
+              subTitle: '',
+              onTap: () {},
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -66,5 +102,60 @@ class ExercisesState extends State<Exercises> {
         .reduce((value, element) =>
             value.date.compareTo(element.date) > 0 ? value : element)
         .date;
+  }
+
+  void setAllControllers() {
+    setsInput = NumberInputComponent(
+      key: GlobalKey<InputComponentState>(),
+      inputController: TextEditingController(),
+      labelText: "Sets",
+    );
+
+    repsInput = NumberInputComponent(
+      key: GlobalKey<InputComponentState>(),
+      inputController: TextEditingController(),
+      labelText: "Reps",
+    );
+    weightInput = NumberInputComponent(
+      key: GlobalKey<InputComponentState>(),
+      inputController: TextEditingController(),
+      labelText: "Weight",
+    );
+    notesInput = LongInputComponent(
+      key: GlobalKey<InputComponentState>(),
+      inputController: TextEditingController(),
+      labelText: "Notes",
+    );
+
+    dateInput = DateInputComponent(
+        key: GlobalKey<InputComponentState>(),
+        inputController: TextEditingController(),
+        labelText: "Date");
+
+    inputs = [
+      setsInput,
+      repsInput,
+      weightInput,
+      notesInput,
+      dateInput,
+    ];
+  }
+
+  void verifyInputsNotEmpty() {
+    for (InputComponent input in inputs) {
+      if (input is! LongInputComponent) {
+        if (input.key.currentState!.isEmpty()) {
+          setState(() {
+            isError = true;
+          });
+        }
+      }
+    }
+  }
+
+  void resetError() {
+    setState(() {
+      isError = false;
+    });
   }
 }

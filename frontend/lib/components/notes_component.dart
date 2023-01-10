@@ -24,7 +24,6 @@ class _NotesComponentState extends State<NotesComponent> {
 
   late List<InputComponent> inputs;
 
-  String errorMessage = "";
   bool isError = false;
   GlobalKey<ModalComponentState> modalKey = GlobalKey();
 
@@ -124,7 +123,6 @@ class _NotesComponentState extends State<NotesComponent> {
   void resetError() {
     setState(() {
       isError = false;
-      errorMessage = "";
     });
   }
 }
