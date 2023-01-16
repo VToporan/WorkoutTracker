@@ -6,124 +6,76 @@ import 'error_component.dart';
 import 'input_components.dart';
 
 class ModalComponent extends StatefulWidget {
-  final int id;
-  const ModalComponent({super.key, required this.id});
+  final String title;
+  final List<InputComponent> inputs;
+  final Function() onSubmit;
+  final GlobalKey key;
+
+  const ModalComponent({
+    required this.key,
+    required this.title,
+    required this.inputs,
+    required this.onSubmit,
+  });
 
   @override
   State<ModalComponent> createState() => ModalComponentState();
 }
 
 class ModalComponentState extends State<ModalComponent> {
-  NumberInputComponent setsInput = NumberInputComponent(
-    key: GlobalKey<InputComponentState>(),
-    inputController: TextEditingController(),
-    labelText: "Sets",
-  );
-
-  NumberInputComponent repsInput = NumberInputComponent(
-    key: GlobalKey<InputComponentState>(),
-    inputController: TextEditingController(),
-    labelText: "Reps",
-  );
-  NumberInputComponent weightInput = NumberInputComponent(
-    key: GlobalKey<InputComponentState>(),
-    inputController: TextEditingController(),
-    labelText: "Weight",
-  );
-  LongInputComponent notesInput = LongInputComponent(
-    key: GlobalKey<InputComponentState>(),
-    inputController: TextEditingController(),
-    labelText: "Notes",
-  );
-
-  DateInputComponent dateInput = DateInputComponent(
-      key: GlobalKey<InputComponentState>(),
-      inputController: TextEditingController(),
-      labelText: "Date");
-
-  late List<InputComponent> inputs;
-  bool isError = false;
-  String errorMessage = "";
+  // late List<InputComponent> inputs;
 
   @override
   void initState() {
     super.initState();
-    inputs = [
-      setsInput,
-      repsInput,
-      weightInput,
-      dateInput,
-      notesInput,
-    ];
+    // inputs = widget.inputs;
   }
 
+  late String errorMessage = "";
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: Column(
-                children: inputs,
-              ),
-            ),
-            ErrorComponent(message: errorMessage),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                      child: ButtonComponent(
-                    buttonFunction: () => {Navigator.pop(context, true)},
-                    buttonText: "Cancel",
-                  )),
-                  Expanded(
-                      child: ButtonComponent(
-                    buttonFunction: submitData,
-                    buttonText: "Confirm",
-                  )),
-                ],
-              ),
-            )
-          ]),
+      child: ListView(children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+          child: Text(
+            widget.title,
+            style: Theme.of(context).textTheme.displayLarge,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25),
+          child: Column(
+            children: widget.inputs,
+          ),
+        ),
+        ErrorComponent(message: errorMessage),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                  child: ButtonComponent(
+                buttonFunction: () => {Navigator.pop(context, true)},
+                buttonText: "Cancel",
+              )),
+              Expanded(
+                  child: ButtonComponent(
+                buttonFunction: widget.onSubmit,
+                buttonText: "Confirm",
+              )),
+            ],
+          ),
+        )
+      ]),
     );
   }
 
-  void submitData() {
-    resetError();
-    verifyInputsNotEmpty();
-    if (isError) {
-      setState(() {
-        errorMessage = "Invalid inputs";
-      });
-    }
-  }
-
-  void verifyInputsNotEmpty() {
-    for (InputComponent input in inputs) {
-      if (input != notesInput) {
-        if (input.key.currentState!.isEmpty()) {
-          isError = true;
-        }
-      }
-    }
-  }
-
-  void resetError() {
+  setErrorMessage(message) {
     setState(() {
-      isError = false;
-      errorMessage = "";
+      errorMessage = message;
     });
-  }
-
-  void clearControllers() {
-    for (InputComponent input in inputs) {
-      input.inputController.clear();
-    }
   }
 }
