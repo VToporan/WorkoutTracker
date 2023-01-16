@@ -35,44 +35,41 @@ class ModalComponentState extends State<ModalComponent> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
-              child: Text(
-                widget.title,
-                style: Theme.of(context).textTheme.displayLarge,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: Column(
-                children: widget.inputs,
-              ),
-            ),
-            ErrorComponent(message: errorMessage),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                      child: ButtonComponent(
-                    buttonFunction: () => {Navigator.pop(context, true)},
-                    buttonText: "Cancel",
-                  )),
-                  Expanded(
-                      child: ButtonComponent(
-                    buttonFunction: widget.onSubmit,
-                    buttonText: "Confirm",
-                  )),
-                ],
-              ),
-            )
-          ]),
+      child: ListView(children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+          child: Text(
+            widget.title,
+            style: Theme.of(context).textTheme.displayLarge,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25),
+          child: Column(
+            children: widget.inputs,
+          ),
+        ),
+        ErrorComponent(message: errorMessage),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                  child: ButtonComponent(
+                buttonFunction: () => {Navigator.pop(context, true)},
+                buttonText: "Cancel",
+              )),
+              Expanded(
+                  child: ButtonComponent(
+                buttonFunction: widget.onSubmit,
+                buttonText: "Confirm",
+              )),
+            ],
+          ),
+        )
+      ]),
     );
   }
 

@@ -60,7 +60,7 @@ class ExercisesState extends State<Exercises> {
                             return ModalComponent(
                                 key: modalKey,
                                 title:
-                                    'Add log for - ${currentExercise.exerciseName}',
+                                    'Add log for ${currentExercise.exerciseName}',
                                 inputs: inputs,
                                 onSubmit: () {
                                   resetError();
