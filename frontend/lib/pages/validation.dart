@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../components/button_components.dart';
 import '../components/error_component.dart';
@@ -97,7 +98,7 @@ class ValidateState extends State<Validate> {
     }
   }
 
-  void attemptRegister() {
+  void attemptRegister() async {
     String username = userInput.inputController.text;
     String email = emailInput.inputController.text;
     String password = passwordInput.inputController.text;
@@ -105,9 +106,7 @@ class ValidateState extends State<Validate> {
 
     verifyInputsNotEmpty();
     if (isError) {
-      setState(() {
-        errorMessage = "Invalid inputs";
-      });
+      errorMessage = "Invalid inputs";
       return;
     }
     validateUsername(username);
@@ -120,24 +119,38 @@ class ValidateState extends State<Validate> {
       'email': email,
       'password': password,
     };
+
+    SharedPreferences perfs = await SharedPreferences.getInstance();
+    perfs.setBool('isLoggedIn', true);
+
+    Navigator.popUntil(context, ModalRoute.withName('/auth'));
+    Navigator.pushReplacementNamed(context, '/home');
   }
 
-  void attemptLogin() {
+  Future<void> attemptLogin() async {
     String username = userInput.inputController.text;
     String password = passwordInput.inputController.text;
     resetError();
 
+    verifyInputsNotEmpty();
     validateUsername(username);
     validatePassword(password);
 
     if (isError) {
       errorMessage = "Invalid inputs";
+      return;
     }
 
     Map<String, dynamic> payload = {
       'username': username,
       'password': password,
     };
+
+    SharedPreferences perfs = await SharedPreferences.getInstance();
+    perfs.setBool('isLoggedIn', true);
+
+    Navigator.popUntil(context, ModalRoute.withName('/auth'));
+    Navigator.pushReplacementNamed(context, '/home');
   }
 
   void setRegisterInputs() {

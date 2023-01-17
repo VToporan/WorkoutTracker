@@ -1,7 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'components/modal_component.dart';
 import 'pages/exercises.dart';
 import 'pages/history.dart';
 import 'pages/authentication.dart';
@@ -19,8 +21,9 @@ class ThemeColors {
   static const Color errorDefault = Color(0xFFD03070);
 }
 
-void main() {
-  bool isAuthenticated = true;
+Future<void> main() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
 
   runApp(
     MaterialApp(
@@ -40,7 +43,7 @@ void main() {
         ),
         inputDecorationTheme: const InputDecorationTheme(
           labelStyle:
-              TextStyle(fontSize: 30, color: ThemeColors.foregroundDefault),
+              TextStyle(fontSize: 20, color: ThemeColors.foregroundDefault),
           hintStyle:
               TextStyle(fontSize: 20, color: ThemeColors.foregroundDefault),
           errorStyle: TextStyle(fontSize: 16, color: ThemeColors.errorDefault),
@@ -94,7 +97,7 @@ void main() {
         '/home': (context) => const Home(),
         '/auth': (context) => const Authentication(),
       },
-      initialRoute: isAuthenticated ? '/home' : '/auth',
+      initialRoute: isLoggedIn ? '/home' : '/auth',
     ),
   );
 }
@@ -130,6 +133,29 @@ class HomeState extends State<Home> {
       appBar: AppBar(
         title: const Text("GainsTrack"),
         centerTitle: true,
+        actions: [
+          Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: GestureDetector(
+                onTap: (() => showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return ModalComponent(
+                          key: GlobalKey(),
+                          title: 'Account Settings',
+                          inputs: const [],
+                          onSubmit: () async {
+                            SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            prefs.setBool('isLoggedIn', false);
+                            Navigator.popUntil(
+                                context, ModalRoute.withName('/home'));
+                            Navigator.pushReplacementNamed(context, '/auth');
+                          });
+                    })),
+                child: const Icon(Icons.more_vert),
+              )),
+        ],
       ),
       body: Center(child: navInfo.elementAt(currentNavIndex).page),
       bottomNavigationBar: BottomNavigationBar(
