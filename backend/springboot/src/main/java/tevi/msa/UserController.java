@@ -28,24 +28,15 @@ public class UserController {
             return new ResponseEntity<User>(HttpStatus.BAD_GATEWAY);
         }
     }
-    @PostMapping("/")
-    public void add(@RequestBody User user) {
+
+    @PostMapping("")
+    public ResponseEntity<User> add(@RequestBody User user) {
         userService.saveUser(user);
+        return new ResponseEntity<User>(user, HttpStatus.OK);
     }
-    @PutMapping("/{id}")
-    public ResponseEntity<?> update(@RequestBody User user, @PathVariable Integer id) {
-        try {
-            User existUser = userService.getUser(id);
-            user.setId(id);
-            userService.saveUser(user);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
+
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Integer id) {
-
         userService.deleteUser(id);
     }
 }
