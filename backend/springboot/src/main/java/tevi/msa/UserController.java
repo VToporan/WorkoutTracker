@@ -18,7 +18,7 @@ public class UserController {
             userService.saveUser(user);
             return new ResponseEntity<User>(user, HttpStatus.OK);
         } catch (DataIntegrityViolationException e) {
-            return new ResponseEntity<User>(HttpStatus.IM_USED);
+            return new ResponseEntity<User>(HttpStatus.CONFLICT);
         }
     }
 
@@ -27,16 +27,18 @@ public class UserController {
         try {
             User existingUser = userService.getUser(user.getUsername());
             if (existingUser == null) {
-                throw new DataIntegrityViolationException("No such user");
+                throw new Exception("No such user");
 
             }
             if (! existingUser.getPassword().equals((Object) user.getPassword())) {
                 throw new DataIntegrityViolationException("Password doesn't match");
             }
             return new ResponseEntity<User>(existingUser, HttpStatus.OK); 
-            
+
         } catch (DataIntegrityViolationException e) {
-            return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<User>(HttpStatus.NOT_ACCEPTABLE);
+        } catch (Exception e) {
+            return new ResponseEntity<User>(HttpStatus.CONFLICT);
         }
     }
 }
