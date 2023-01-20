@@ -33,8 +33,8 @@ public class UserController {
             if (! existingUser.getPassword().equals((Object) user.getPassword())) {
                 throw new DataIntegrityViolationException("Password doesn't match");
             }
-
-            return new ResponseEntity<User>(user, HttpStatus.OK); 
+            return new ResponseEntity<User>(existingUser, HttpStatus.OK); 
+            
         } catch (DataIntegrityViolationException e) {
             return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
         }
