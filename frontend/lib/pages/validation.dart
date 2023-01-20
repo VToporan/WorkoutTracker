@@ -50,6 +50,7 @@ class ValidateState extends State<Validate> {
   static String errorMessage = "";
 
   late List<InputComponent> inputs;
+  late User user;
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +139,7 @@ class ValidateState extends State<Validate> {
         return;
       }
 
-      HomeState.user = User.fromJson(json.decode(response.body));
+      user = User.fromJson(json.decode(response.body));
     } catch (e) {
       setError("No connection");
     }
@@ -183,7 +184,7 @@ class ValidateState extends State<Validate> {
         return;
       }
 
-      HomeState.user = User.fromJson(json.decode(response.body));
+      user = User.fromJson(json.decode(response.body));
     } catch (e) {
       setError("No connection");
     }
@@ -195,6 +196,7 @@ class ValidateState extends State<Validate> {
   Future<void> loginAndNavigate() async {
     SharedPreferences perfs = await SharedPreferences.getInstance();
     perfs.setBool('isLoggedIn', true);
+    perfs.setInt('userid', user.id);
 
     Navigator.popUntil(context, ModalRoute.withName('/auth'));
     Navigator.pushReplacementNamed(context, '/home');

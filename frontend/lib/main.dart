@@ -120,9 +120,8 @@ class Home extends StatefulWidget {
 
 class HomeState extends State<Home> {
   int currentNavIndex = 0;
-  static late User user;
   static List<ExerciseData> exerciseData =
-      extractDataFromPayload(getDataFromDB(user));
+      extractDataFromPayload(getDataFromDB());
 
   static List<NavigationInfo> navInfo = [
     NavigationInfo(const Exercises(), "Exercises", Icons.fitness_center),
@@ -163,7 +162,7 @@ class HomeState extends State<Home> {
     return data.map<ExerciseData>(ExerciseData.fromJson).toList();
   }
 
-  static List<Map<String, Object>> getDataFromDB(User user) {
+  static List<Map<String, Object>> getDataFromDB() {
     const data = [
       {
         'id': 1,
@@ -249,6 +248,7 @@ class HomeState extends State<Home> {
   Future<void> logoutAndNavigate() async {
     SharedPreferences perfs = await SharedPreferences.getInstance();
     perfs.setBool('isLoggedIn', false);
+    perfs.setInt('userid', -1);
 
     Navigator.popUntil(context, ModalRoute.withName('/home'));
     Navigator.pushReplacementNamed(context, '/auth');
