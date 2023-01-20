@@ -1,14 +1,18 @@
-import 'dart:math';
+import 'dart:convert';
 
 import 'package:GainsTrack/storage/user_data_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart';
+import 'package:http_status_code/http_status_code.dart';
 
-import 'components/modal_component.dart';
 import 'pages/exercises.dart';
 import 'pages/history.dart';
 import 'pages/authentication.dart';
 import 'storage/exercise_data_storage.dart';
+import 'package:http/http.dart';
+import 'package:http_status_code/http_status_code.dart';
 
 class ThemeColors {
   ThemeColors._();
@@ -120,14 +124,20 @@ class Home extends StatefulWidget {
 
 class HomeState extends State<Home> {
   int currentNavIndex = 0;
-  static late User user;
-  static List<ExerciseData> exerciseData =
-      extractDataFromPayload(getDataFromDB(user));
+  static late List<ExerciseData> exerciseData = [];
 
   static List<NavigationInfo> navInfo = [
     NavigationInfo(const Exercises(), "Exercises", Icons.fitness_center),
     NavigationInfo(const History(), "History", Icons.history_sharp)
   ];
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future<List<dynamic>> data = getDataFromDB();
+    data.then((value) => exerciseData = extractDataFromPayload(value));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -158,92 +168,33 @@ class HomeState extends State<Home> {
     );
   }
 
-  static List<ExerciseData> extractDataFromPayload(
-      List<Map<String, Object>> data) {
+  static List<ExerciseData> extractDataFromPayload(List<dynamic> data) {
     return data.map<ExerciseData>(ExerciseData.fromJson).toList();
   }
 
-  static List<Map<String, Object>> getDataFromDB(User user) {
-    const data = [
-      {
-        'id': 1,
-        'name': 'Biceps Curls',
-        'logData': [
-          {
-            'id': 101,
-            'sets': 1.0,
-            'reps': 5.0,
-            'weight': 10.0,
-            'note': 'note 11',
-            'date': '01.01.2023',
-          },
-          {
-            'id': 102,
-            'sets': 1.0,
-            'reps': 7.0,
-            'weight': 15.0,
-            'note': 'note 12',
-            'date': '02.01.2023',
-          },
-          {
-            'id': 103,
-            'sets': 1.0,
-            'reps': 5.0,
-            'weight': 20.0,
-            'note': 'note 13',
-            'date': '03.01.2023',
-          },
-          {
-            'id': 104,
-            'sets': 2.0,
-            'reps': 5.0,
-            'weight': 15.0,
-            'note': 'note 14',
-            'date': '04.01.2023',
-          }
-        ],
-      },
-      {
-        'id': 2,
-        'name': 'Bench Press',
-        'logData': [
-          {
-            'id': 201,
-            'sets': 1.0,
-            'reps': 5.0,
-            'weight': 50.0,
-            'note': 'note 21',
-            'date': '01.01.2023',
-          },
-          {
-            'id': 202,
-            'sets': 1.0,
-            'reps': 7.0,
-            'weight': 55.0,
-            'note': 'note 22',
-            'date': '02.01.2023',
-          },
-          {
-            'id': 203,
-            'sets': 1.0,
-            'reps': 5.0,
-            'weight': 70.0,
-            'note': 'note 23',
-            'date': '03.01.2023',
-          },
-          {
-            'id': 204,
-            'sets': 2.0,
-            'reps': 5.0,
-            'weight': 55.0,
-            'note': 'note 24',
-            'date': '04.01.2023',
-          }
-        ],
-      },
-    ];
+  static Future<List<dynamic>> getDataFromDB() async {
+    SharedPreferences perfs = await SharedPreferences.getInstance();
+    int userid = perfs.getInt("userid") ?? -1;
+    if (userid == -1) return [];
 
-    return data;
+    try {
+      final response = await get(
+        Uri.parse('http://localhost:8080/exercises/${userid}'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+
+      if (response.statusCode != StatusCode.OK) {
+        print("statusnotok");
+        return [];
+      }
+
+      return json.decode(response.body);
+    } catch (e) {
+      print(e);
+      return [];
+    }
   }
 
   Future<void> logoutAndNavigate() async {

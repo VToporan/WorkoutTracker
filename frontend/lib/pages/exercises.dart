@@ -6,7 +6,10 @@ import 'package:GainsTrack/storage/exercise_data_storage.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:http_status_code/http_status_code.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../components/card_component.dart';
 import '../components/input_components.dart';
@@ -31,6 +34,13 @@ class ExercisesState extends State<Exercises> {
 
   bool isError = false;
   GlobalKey<ModalComponentState> modalKey = GlobalKey();
+  GlobalKey<ModalComponentState> addKey = GlobalKey();
+  InputComponent newExerciseName = InputComponent(
+    key: GlobalKey(),
+    inputController: TextEditingController(),
+    labelText: "Exercise Name",
+    isHidden: false,
+  );
 
   @override
   void initState() {
@@ -72,7 +82,14 @@ class ExercisesState extends State<Exercises> {
                                   print(currentExercise.exerciseName);
                                 });
                           })),
-                      onDelete: ((context) {
+                      onDelete: ((context) async {
+                        final response = await delete(
+                          Uri.parse(
+                              'http://localhost:8080/exercises/delete/${currentExercise.id}'),
+                          headers: <String, String>{
+                            'Content-Type': 'application/json; charset=UTF-8',
+                          },
+                        );
                         setState(() {
                           exerciseData.remove(currentExercise);
                         });
@@ -84,7 +101,62 @@ class ExercisesState extends State<Exercises> {
             CardComponent(
               title: 'Add new exercise',
               subTitle: '',
-              onTap: () {},
+              onTap: (() => showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    setAllControllers();
+                    return ModalComponent(
+                        key: addKey,
+                        title: 'Add exercise',
+                        inputs: [newExerciseName],
+                        onSubmit: () async {
+                          SharedPreferences perfs =
+                              await SharedPreferences.getInstance();
+                          int userid = perfs.getInt("userid") ?? -1;
+                          resetError();
+                          if (newExerciseName.key.currentState!.isEmpty()) {
+                            isError = true;
+                          }
+                          if (isError) {
+                            addKey.currentState!
+                                .setErrorMessage("Invalid Inputs");
+                            return;
+                          }
+
+                          try {
+                            final response = await post(
+                              Uri.parse(
+                                  'http://localhost:8080/exercises/${userid}/add'),
+                              headers: <String, String>{
+                                'Content-Type':
+                                    'application/json; charset=UTF-8',
+                              },
+                              body: jsonEncode(<String, String>{
+                                'exercisename':
+                                    newExerciseName.inputController.text,
+                              }),
+                            );
+
+                            if (response.statusCode != StatusCode.OK) {
+                              addKey.currentState!
+                                  .setErrorMessage("Invalid data");
+                              return;
+                            }
+
+                            ExerciseData newExercise = ExerciseData.fromJson(
+                                json.decode(response.body));
+
+                            setState(() {
+                              exerciseData.add(newExercise);
+                            });
+                          } catch (e) {
+                            print(e);
+                            addKey.currentState!
+                                .setErrorMessage("No connection");
+                            return;
+                          }
+                        });
+                  })),
             ),
           ],
         ),
