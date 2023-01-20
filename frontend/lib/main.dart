@@ -134,9 +134,6 @@ class HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-
-    Future<List<dynamic>> data = getDataFromDB();
-    data.then((value) => exerciseData = extractDataFromPayload(value));
   }
 
   @override

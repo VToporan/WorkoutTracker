@@ -72,14 +72,51 @@ class ExercisesState extends State<Exercises> {
                                 title:
                                     'Add log for ${currentExercise.exerciseName}',
                                 inputs: inputs,
-                                onSubmit: () {
+                                onSubmit: () async {
                                   resetError();
                                   verifyInputsNotEmpty();
                                   if (isError) {
                                     modalKey.currentState!
                                         .setErrorMessage("Invalid Inputs");
                                   }
-                                  print(currentExercise.exerciseName);
+                                  try {
+                                    final response = await post(
+                                      Uri.parse(
+                                          'http://localhost:8080/logs/${currentExercise.id}/add'),
+                                      headers: <String, String>{
+                                        'Content-Type':
+                                            'application/json; charset=UTF-8',
+                                      },
+                                      body: jsonEncode(<String, String>{
+                                        "sets": setsInput.inputController.text,
+                                        "reps": repsInput.inputController.text,
+                                        "weight":
+                                            weightInput.inputController.text,
+                                        "notes":
+                                            notesInput.inputController.text,
+                                        "logdate":
+                                            dateInput.inputController.text,
+                                      }),
+                                    );
+
+                                    if (response.statusCode ==
+                                        StatusCode.CONFLICT) {
+                                      print("conflict");
+                                      return;
+                                    }
+
+                                    if (response.statusCode ==
+                                        StatusCode.NOT_ACCEPTABLE) {
+                                      print("nobon");
+                                      return;
+                                    }
+
+                                    LogData newLog =
+                                        LogData.fromJson(response.body);
+                                    currentExercise.logData.add(newLog);
+                                  } catch (e) {
+                                    print(e);
+                                  }
                                 });
                           })),
                       onDelete: ((context) async {
@@ -104,7 +141,7 @@ class ExercisesState extends State<Exercises> {
               onTap: (() => showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    setAllControllers();
+                    newExerciseName.inputController.clear();
                     return ModalComponent(
                         key: addKey,
                         title: 'Add exercise',
@@ -149,6 +186,7 @@ class ExercisesState extends State<Exercises> {
                             setState(() {
                               exerciseData.add(newExercise);
                             });
+                            return;
                           } catch (e) {
                             print(e);
                             addKey.currentState!
@@ -170,6 +208,7 @@ class ExercisesState extends State<Exercises> {
   }
 
   DateTime lastLogDate(ExerciseData currentExercise) {
+    if (currentExercise.logData.isEmpty) return DateTime.now();
     return currentExercise.logData
         .reduce((value, element) =>
             value.date.compareTo(element.date) > 0 ? value : element)

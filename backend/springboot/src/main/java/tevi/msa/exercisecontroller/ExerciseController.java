@@ -33,6 +33,8 @@ public class ExerciseController {
 
             exercise.setUser(user);
             exerciseService.saveExercise(exercise);
+            List<ExerciseLog> logData = exerciseLogService.listAllExerciseLogs(exercise.getId());
+                exercise.setLogData(logData);
             return new ResponseEntity<Exercise>(exercise, HttpStatus.OK);
 
         } catch (DataIntegrityViolationException e) {
