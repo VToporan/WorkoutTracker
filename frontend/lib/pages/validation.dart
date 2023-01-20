@@ -4,6 +4,7 @@ import 'package:GainsTrack/main.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:http_status_code/http_status_code.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../components/button_components.dart';
@@ -132,7 +133,7 @@ class ValidateState extends State<Validate> {
         }),
       );
 
-      if (response.statusCode == 226) {
+      if (response.statusCode == StatusCode.CONFLICT) {
         setError("Username or email already exist");
         return;
       }
@@ -156,16 +157,38 @@ class ValidateState extends State<Validate> {
     validateUsername(username);
     validatePassword(password);
 
-    if (isError) {
-      errorMessage = "Invalid inputs";
-      return;
+    if (isError) return;
+
+    Digest hashedPassword = hashPassword(username, password);
+
+    try {
+      final response = await post(
+        Uri.parse('http://localhost:8080/users/login'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'username': username,
+          'password': hashedPassword.toString(),
+        }),
+      );
+
+      if (response.statusCode == StatusCode.CONFLICT) {
+        setError("Username does not exist");
+        return;
+      }
+
+      if (response.statusCode == StatusCode.NOT_ACCEPTABLE) {
+        setError("Incorrect password");
+        return;
+      }
+
+      HomeState.user = User.fromJson(json.decode(response.body));
+    } catch (e) {
+      setError("No connection");
     }
 
-    Map<String, dynamic> payload = {
-      'username': username,
-      'password': password,
-    };
-
+    if (isError) return;
     await loginAndNavigate();
   }
 

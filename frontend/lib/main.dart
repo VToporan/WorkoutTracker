@@ -140,7 +140,7 @@ class HomeState extends State<Home> {
               padding: const EdgeInsets.only(right: 20.0),
               child: GestureDetector(
                 onTap: logoutAndNavigate,
-                child: const Icon(Icons.more_vert),
+                child: const Icon(Icons.person),
               )),
         ],
       ),
