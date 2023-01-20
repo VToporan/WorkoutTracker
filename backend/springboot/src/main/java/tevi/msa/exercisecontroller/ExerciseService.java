@@ -10,8 +10,8 @@ import java.util.List;
 public class ExerciseService {
     @Autowired
     private ExerciseRepository ExerciseRepository;
-    public List<Exercise> listAllExercise() {
-        return ExerciseRepository.findAll();
+    public List<Exercise> listAllExercise(int userid) {
+        return ExerciseRepository.findByUserId(userid);
     }
 
     public void saveExercise(Exercise Exercise) {
