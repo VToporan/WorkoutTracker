@@ -1,9 +1,15 @@
+import 'dart:convert';
+
+import 'package:GainsTrack/main.dart';
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../components/button_components.dart';
 import '../components/error_component.dart';
 import '../components/input_components.dart';
+import '../storage/user_data_storage.dart';
 
 class Validate extends StatefulWidget {
   final bool isLoginPage;
@@ -105,26 +111,40 @@ class ValidateState extends State<Validate> {
     resetError();
 
     verifyInputsNotEmpty();
-    if (isError) {
-      errorMessage = "Invalid inputs";
-      return;
-    }
+    if (isError) return;
     validateUsername(username);
     validateEmail(email);
     validatePassword(password);
     validateConfirmPassword(password);
 
-    Map<String, dynamic> payload = {
-      'username': username,
-      'email': email,
-      'password': password,
-    };
+    Digest hashedPassword = hashPassword(username, password);
 
-    SharedPreferences perfs = await SharedPreferences.getInstance();
-    perfs.setBool('isLoggedIn', true);
+    try {
+      final response = await post(
+        Uri.parse('http://localhost:8080/users/register'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'username': username,
+          'email': email,
+          'password': hashedPassword.toString(),
+        }),
+      );
 
-    Navigator.popUntil(context, ModalRoute.withName('/auth'));
-    Navigator.pushReplacementNamed(context, '/home');
+      if (response.statusCode == 226) {
+        setError("Username or email already exist");
+        return;
+      }
+
+      HomeState.user = User.fromJson(json.decode(response.body));
+    } catch (e) {
+      setError("No connection");
+    }
+
+    if (isError) return;
+
+    await loginAndNavigate();
   }
 
   Future<void> attemptLogin() async {
@@ -146,6 +166,10 @@ class ValidateState extends State<Validate> {
       'password': password,
     };
 
+    await loginAndNavigate();
+  }
+
+  Future<void> loginAndNavigate() async {
     SharedPreferences perfs = await SharedPreferences.getInstance();
     perfs.setBool('isLoggedIn', true);
 
@@ -184,6 +208,13 @@ class ValidateState extends State<Validate> {
     });
   }
 
+  void setError(String message) {
+    setState(() {
+      isError = true;
+      errorMessage = message;
+    });
+  }
+
   void clearControllers() {
     for (InputComponent input in inputs) {
       input.inputController.clear();
@@ -193,8 +224,16 @@ class ValidateState extends State<Validate> {
   void verifyInputsNotEmpty() {
     for (InputComponent input in inputs) {
       if (input.key.currentState!.isEmpty()) {
-        isError = true;
+        setError("Invalid inputs");
       }
     }
+  }
+
+  Digest hashPassword(String username, String password) {
+    var salt = utf8.encode(username);
+    var pass = utf8.encode(password);
+
+    var hash256 = Hmac(sha256, salt);
+    return hash256.convert(pass);
   }
 }
