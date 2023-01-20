@@ -57,4 +57,10 @@ public class ExerciseController {
             return new ResponseEntity<List<Exercise>>(HttpStatus.CONFLICT);
         }
     }
+
+    @DeleteMapping("/delete/{exerciseid}")
+    @ResponseStatus(HttpStatus.OK)
+    public void delete(@PathVariable(value = "exerciseid") int exerciseidid) {
+        exerciseService.deleteExercise(exerciseidid);
+    }
 }
