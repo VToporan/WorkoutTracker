@@ -1,4 +1,4 @@
-package tevi.msa;
+package tevi.msa.usercontroller;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

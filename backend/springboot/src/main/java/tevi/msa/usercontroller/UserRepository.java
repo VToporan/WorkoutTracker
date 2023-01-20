@@ -1,4 +1,4 @@
-package tevi.msa;
+package tevi.msa.usercontroller;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
