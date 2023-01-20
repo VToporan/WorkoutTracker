@@ -11,10 +11,12 @@ class ExerciseData {
     required this.logData,
   });
 
-  static ExerciseData fromJson(json) => ExerciseData(
-      id: json['id'],
-      exerciseName: json['name'],
-      logData: json['logData'].map<LogData>(LogData.fromJson).toList());
+  static ExerciseData fromJson(json) {
+    return ExerciseData(
+        id: json['id'],
+        exerciseName: json['exercisename'],
+        logData: json['logData'].map<LogData>(LogData.fromJson).toList());
+  }
 }
 
 class LogData {
@@ -34,12 +36,14 @@ class LogData {
     required this.date,
   });
 
-  static LogData fromJson(json) => LogData(
-        id: json['id'],
-        sets: json['sets'],
-        reps: json['reps'],
-        weight: json['weight'],
-        note: json['note'],
-        date: DateFormat('dd.MM.yyyy').parse(json['date']),
-      );
+  static LogData fromJson(json) {
+    return LogData(
+      id: json['id'],
+      sets: json['sets'],
+      reps: json['reps'],
+      weight: json['weight'],
+      note: json['note'],
+      date: DateFormat('dd.MM.yyyy').parse(json['logdate']),
+    );
+  }
 }

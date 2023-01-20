@@ -9,16 +9,20 @@ import java.util.List;
 @Transactional
 public class ExerciseService {
     @Autowired
-    private ExerciseRepository ExerciseRepository;
+    private ExerciseRepository exerciseRepository;
     public List<Exercise> listAllExercise(int userid) {
-        return ExerciseRepository.findByUserId(userid);
+        return exerciseRepository.findByUserId(userid);
     }
 
     public void saveExercise(Exercise Exercise) {
-        ExerciseRepository.save(Exercise);
+        exerciseRepository.save(Exercise);
     }
 
     public void deleteExercise(Integer id) {
-        ExerciseRepository.deleteById(id);
+        exerciseRepository.deleteById(id);
+    }
+
+    public Exercise getExercise(Integer id) {
+        return exerciseRepository.findById(id).get();
     }
 }
