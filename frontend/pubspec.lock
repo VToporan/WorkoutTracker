@@ -36,6 +36,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.16.0"
+  crypto:
+    dependency: "direct main"
+    description:
+      name: crypto
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.2"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -107,6 +114,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.2"
+  http_status_code:
+    dependency: "direct main"
+    description:
+      name: http_status_code
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.2"
   intl:
     dependency: transitive
     description:

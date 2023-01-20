@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:GainsTrack/storage/user_data_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -119,8 +120,9 @@ class Home extends StatefulWidget {
 
 class HomeState extends State<Home> {
   int currentNavIndex = 0;
+  static late User user;
   static List<ExerciseData> exerciseData =
-      extractDataFromPayload(getDataFromDB());
+      extractDataFromPayload(getDataFromDB(user));
 
   static List<NavigationInfo> navInfo = [
     NavigationInfo(const Exercises(), "Exercises", Icons.fitness_center),
@@ -135,25 +137,10 @@ class HomeState extends State<Home> {
         centerTitle: true,
         actions: [
           Padding(
-              padding: EdgeInsets.only(right: 20.0),
+              padding: const EdgeInsets.only(right: 20.0),
               child: GestureDetector(
-                onTap: (() => showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return ModalComponent(
-                          key: GlobalKey(),
-                          title: 'Account Settings',
-                          inputs: const [],
-                          onSubmit: () async {
-                            SharedPreferences prefs =
-                                await SharedPreferences.getInstance();
-                            prefs.setBool('isLoggedIn', false);
-                            Navigator.popUntil(
-                                context, ModalRoute.withName('/home'));
-                            Navigator.pushReplacementNamed(context, '/auth');
-                          });
-                    })),
-                child: const Icon(Icons.more_vert),
+                onTap: logoutAndNavigate,
+                child: const Icon(Icons.person),
               )),
         ],
       ),
@@ -176,7 +163,7 @@ class HomeState extends State<Home> {
     return data.map<ExerciseData>(ExerciseData.fromJson).toList();
   }
 
-  static List<Map<String, Object>> getDataFromDB() {
+  static List<Map<String, Object>> getDataFromDB(User user) {
     const data = [
       {
         'id': 1,
@@ -257,5 +244,13 @@ class HomeState extends State<Home> {
     ];
 
     return data;
+  }
+
+  Future<void> logoutAndNavigate() async {
+    SharedPreferences perfs = await SharedPreferences.getInstance();
+    perfs.setBool('isLoggedIn', false);
+
+    Navigator.popUntil(context, ModalRoute.withName('/home'));
+    Navigator.pushReplacementNamed(context, '/auth');
   }
 }
